@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mtgfail-api
-        image: nginx:1.14.2
+        image: gcr.io/snackend/github.com/guygrigsby/mtgfail:baca25089e2f51e2b10bceabc39e5be8705ddd21
         ports:
         - containerPort: 80
 ---

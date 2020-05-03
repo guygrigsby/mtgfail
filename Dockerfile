@@ -13,4 +13,5 @@ FROM alpine AS runtime
 RUN adduser -S -D -H -h /app appuser
 USER appuser
 COPY --from=build /go/src/app/* /
+COPY scryfall-default-cards.json /scryfall-default-cards.json
 ENTRYPOINT ["/app"]
