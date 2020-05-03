@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -14,9 +15,13 @@ import (
 )
 
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			q := r.URL.Query()
+	return func(w http.ResponseWriter, req *http.Request) {
+		var (
+			err error
+			r   io.ReadCloser
+		)
+		if req.Method == http.MethodGet {
+			q := req.URL.Query()
 			if len(q) == 0 {
 				// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
 				// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
@@ -67,7 +72,17 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 
 				}
 
-				r, err := NormalizeDeck(res.Body)
+				r, err = mtgfail.Normalize(res.Body, log)
+				if err != nil {
+					log.Error(
+						"Unexpected format for deck status",
+						"err", err,
+						"url", deckURI,
+					)
+					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
+					return
+				}
+				break
 
 			default:
 				http.Error(w, "Unsupported deck host URI", http.StatusUnprocessableEntity)
@@ -75,25 +90,19 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			}
 
 		}
-		if r.Method != http.MethodPost {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		var (
-			err error
-		)
 
 		deckList := make(map[string]int)
 
-		switch r.Header.Get("Content-Type") {
+		switch req.Header.Get("Content-Type") {
 		case "application/json":
 			//TODO
 		case "application/x-www-form-urlencoded":
 			//TODO
 		case "text/plain":
+			r = req.Body
 			fallthrough
 		default:
-			deckList, err = mtgfail.ReadCardList(r.Body, log)
+			deckList, err = mtgfail.ReadCardList(r, log)
 			if err != nil {
 				log.Error(
 					"Can't read cardfile",
