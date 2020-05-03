@@ -1,7 +1,7 @@
 steps:
   # test it
 - name: "gcr.io/cloud-builders/docker"
-  args: ["build", "-t","mtgfail-test:$SHORT_SHA", ".", "-f ", "Dockerfile.test"]
+  args: ["build", "-t","mtgfail-test:$SHORT_SHA", "-f ", "Dockerfile.test", "."]
   # build it
 - name: "gcr.io/cloud-builders/docker"
   args: ["build", "-t", "gcr.io/snackend/mtgfail:$SHORT_SHA", "."]
