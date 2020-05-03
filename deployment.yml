@@ -26,7 +26,7 @@ spec:
             memory: "1024Mi"
             cpu: "250m"
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 ---
 kind: Service 
 apiVersion: v1 
@@ -34,16 +34,9 @@ metadata:
   name: mtgfail-api
   namespace: mtgfail
 spec:
-  # Expose the service on a static port on each node
-  # so that we can access the service from outside the cluster 
   type: NodePort
-
-  # When the node receives a request on the static port (30163)
-  # "select pods with the label 'app' set to 'echo-hostname'"
-  # and forward the request to one of them
   selector:
     app: mtgfail-api
-
   ports:
     - nodePort:
       port: 8080 
