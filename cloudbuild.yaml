@@ -13,6 +13,6 @@ steps:
   args:
   - run
   - --filename=deployment.yml
-  - --image=gcr.io/snackend/mtgfail:latest
+  - --image=gcr.io/snackend/mtgfail:$SHORT_SHA
   - --location=us-central1-c
   - --cluster=cluster-1
