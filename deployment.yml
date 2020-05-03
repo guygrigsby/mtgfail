@@ -18,6 +18,12 @@ spec:
       containers:
       - name: mtgfail-api
         image: gcr.io/snackend/mtgfail:5bae630
+        image: polinux/stress
+        resources:
+          limits:
+            memory: "500Mi"
+          requests:
+            memory: "300Mi"
         ports:
         - containerPort: 80
 ---
