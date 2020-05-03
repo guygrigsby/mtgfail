@@ -3,6 +3,7 @@ package mtgfail
 import (
 	"bufio"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -55,17 +56,14 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	return bulk, nil
 }
 
-func ReadCardList(file string, log log15.Logger) (map[string]int, error) {
-	f, err := os.Open(file)
-	if err != nil {
-		log.Error(
-			"Can't open file",
-			"err", err,
-		)
-		return nil, err
-	}
+func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+
+	log.Debug(
+		"scanning ",
+	)
 	cards := make(map[string]int)
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(r)
+	defer r.Close()
 
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {

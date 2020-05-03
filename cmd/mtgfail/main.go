@@ -34,7 +34,16 @@ func main() {
 		"Read bulk",
 		"entries", len(bulk),
 	)
-	deckList, err := mtgfail.ReadCardList(def, log)
+	r, err := os.Open(def)
+	if err != nil {
+		log.Error(
+			"Can't open file",
+			"err", err,
+		)
+		return
+	}
+
+	deckList, err := mtgfail.ReadCardList(r, log)
 	if err != nil {
 		log.Error(
 			"Can't read cardfile",
