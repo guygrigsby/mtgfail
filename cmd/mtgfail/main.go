@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/guygrigsby/mtgfail"
+	tts "github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
 	"github.com/inconshreveable/log15"
 )
 
@@ -56,7 +57,7 @@ func main() {
 		"entries", len(deckList),
 	)
 
-	deck, err := mtgfail.BuildDeck(bulk, deckList, log)
+	deck, err := tts.BuildDeck(bulk, deckList, log)
 	if err != nil {
 		log.Error(
 			"Cannot build deck",

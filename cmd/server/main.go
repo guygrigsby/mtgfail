@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/guygrigsby/mtgfail"
+	tts "github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
 	"github.com/inconshreveable/log15"
 )
 
@@ -65,7 +66,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 
 		}
 
-		deck, err := mtgfail.BuildDeck(cache, deckList, log)
+		deck, err := tts.BuildDeck(cache, deckList, log)
 		if err != nil {
 			log.Error(
 				"Cannot build deck",
