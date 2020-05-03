@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mtgfail-api
+  namespace: mtgfail
   labels:
     app: mtgfail-api
 spec:
@@ -24,6 +25,7 @@ kind: Service
 apiVersion: v1 
 metadata:
   name: mtgfail-api
+  namespace: mtgfail
 spec:
   # Expose the service on a static port on each node
   # so that we can access the service from outside the cluster 
