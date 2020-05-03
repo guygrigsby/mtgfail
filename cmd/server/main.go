@@ -117,6 +117,9 @@ func main() {
 		"entries", len(bulk),
 	)
 
+	http.HandleFunc("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
 	http.HandleFunc("/", BuildDeck(bulk, log))
 	if err = http.ListenAndServe(":8080", nil); err != nil {
 		log.Error(
