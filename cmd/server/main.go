@@ -1,13 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"net/url"
 
+	"github.com/avast/retry-go"
 	"github.com/guygrigsby/mtgfail"
 	tts "github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
 	"github.com/inconshreveable/log15"
@@ -16,10 +16,64 @@ import (
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
-			// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
-			// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
-			w.WriteHeader(http.StatusOK)
-			return
+			q := r.URL.Query()
+			if len(q) == 0 {
+				// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
+				// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+			deckURI := q.Get("deck")
+			u, err := url.Parse(deckURI)
+			if err != nil {
+
+				log.Error(
+					"Cannot parse deck uri",
+					"err", err,
+				)
+				http.Error(w, "Cannot parse deck URI", http.StatusBadRequest)
+				return
+			}
+			switch u.Host {
+			// https://deckbox.org/sets/2649137
+			case "deckbox.org":
+				deckURI = fmt.Sprintf("%s/export", deckURI)
+				var res *http.Response
+				err := retry.Do(
+					func() error {
+						var err error
+						res, err = http.DefaultClient.Get(deckURI)
+						if err != nil {
+							return err
+						}
+						return nil
+					})
+				if err != nil {
+					log.Error(
+						"cannot get deckbox deck",
+						"err", err,
+						"uri", deckURI,
+					)
+					http.Error(w, "Cannot get deckbox deck deck URI", http.StatusServiceUnavailable)
+					return
+				}
+				if res.StatusCode != 200 {
+					log.Error(
+						"Unexpected response status",
+						"status", res.Status,
+					)
+					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
+					return
+
+				}
+
+				r, err := NormalizeDeck(res.Body)
+
+			default:
+				http.Error(w, "Unsupported deck host URI", http.StatusUnprocessableEntity)
+				return
+			}
+
 		}
 		if r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -28,21 +82,6 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		var (
 			err error
 		)
-
-		content, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			log.Error(
-				"Cannot read body",
-				"err", err,
-			)
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-		log.Debug(
-			"request",
-			"content", fmt.Sprintf("%+s", content),
-		)
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(content))
 
 		deckList := make(map[string]int)
 
