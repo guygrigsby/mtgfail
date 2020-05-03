@@ -15,6 +15,8 @@ import (
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
+			// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
+			// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
 			w.WriteHeader(http.StatusOK)
 			return
 		}
