@@ -1,10 +1,10 @@
 steps:
   # build the container image
 - name: "gcr.io/cloud-builders/docker"
-  args: ["build", "-t", "gcr.io/snackend/mtgfail:$SHORT_SHA", "."]
+  args: ['build", "-t", "gcr.io/snackend/mtgfail:$SHORT_SHA', "."]
   # tag it
 - name: "gcr.io/cloud-builders/docker"
-  args: ["tag", "gcr.io/snackend/mtgfail:"$SHORT_SHA, "gcr.io/snackend/mtgfail:latest", "."]
+  args: ["tag", 'gcr.io/snackend/mtgfail:$SHORT_SHA', "gcr.io/snackend/mtgfail:latest", "."]
   # push container image
 - name: "gcr.io/cloud-builders/docker"
   args: ["push", "gcr.io/snackend/mtgfail:$SHORT_SHA"]
