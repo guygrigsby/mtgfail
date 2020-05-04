@@ -114,7 +114,6 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 		log.Info(
 			"building stack",
 			"unique cards", len(names),
-			"list", fmt.Sprintf("%+v", names),
 		)
 		var (
 			ids  []int
