@@ -40,6 +40,44 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				return
 			}
 			switch u.Host {
+			//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
+			case "tappedout.net":
+				deckURI = fmt.Sprintf("%s?fmt=txt", deckURI)
+				log.Debug(
+					"tappedout",
+					"deckUri", deckURI,
+				)
+				var res *http.Response
+				err := retry.Do(
+					func() error {
+						var err error
+						res, err = http.DefaultClient.Get(deckURI)
+						if err != nil {
+							return err
+						}
+						return nil
+					})
+				if err != nil {
+					log.Error(
+						"cannot get deckbox deck",
+						"err", err,
+						"uri", deckURI,
+					)
+					http.Error(w, "Cannot get deckbox deck deck URI", http.StatusServiceUnavailable)
+					return
+				}
+				if res.StatusCode != 200 {
+					log.Error(
+						"Unexpected response status",
+						"status", res.Status,
+					)
+					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
+					return
+
+				}
+				r = res.Body
+				break
+
 			// https://deckbox.org/sets/2649137
 			case "deckbox.org":
 				deckURI = fmt.Sprintf("%s/export", deckURI)

@@ -58,8 +58,10 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
+	//b, _ := ioutil.ReadAll(r)
 	log.Debug(
 		"scanning ",
+	//	"content", string(b),
 	)
 	cards := make(map[string]int)
 	scanner := bufio.NewScanner(r)
