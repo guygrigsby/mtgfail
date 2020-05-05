@@ -25,7 +25,7 @@ env:
   GKE_CLUSTER: cluster-1
   IMAGE: mtgfail
   REGISTRY_HOSTNAME: gcr.io
-  DEPLOYMENT_NAME: mtgfail-api
+  DEPLOYMENT_NAME: mtgfail
 
 jobs:
   all:
@@ -85,5 +85,5 @@ jobs:
         gcloud components install kubectl
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         kubectl version
-        kubectl -n mtgfail set image deployment/$DEPLOYMENT_NAME mtgfail-api=$REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA} --record
+        kubectl set image deployment/$DEPLOYMENT_NAME mtgfail-api=$REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA} --record
         kubectl rollout status deployment/$DEPLOYMENT_NAME
