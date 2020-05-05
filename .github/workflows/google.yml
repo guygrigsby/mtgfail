@@ -72,6 +72,7 @@ jobs:
   release-dockerhub:
     name: Push Image to Dockerhub with tags SHA and latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
     - name: Push
       uses: docker/build-push-action@v1
