@@ -1,0 +1,25 @@
+name: Test Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+  release:
+    types: 
+      - created
+
+jobs:
+  setup-test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Run tests
+    - name: Test
+      run: |
+        docker build -t mtgfail-test:$SHORT_SHA -f Dockerfile.test
+
+
