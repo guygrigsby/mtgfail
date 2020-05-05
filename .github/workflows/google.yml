@@ -72,17 +72,15 @@ jobs:
   release-dockerhub:
     name: Push Image to Dockerhub with tags SHA and latest
     needs: build
-    uses: docker/build-push-action@v1
-    with:
-      username: ${{ secrets.DOCKER_USERNAME }}
-      password: ${{ secrets.DOCKER_TOKEN }}
-      repository: guygrigsby/mtgfail
-      tags: latest
-      tag_with_sha: true
     steps:
-    - name: Printing Version
-      run: |        
-        echo "I have to have a stage so I added this echo statement: pushing to dockerhub"
+    - name: Push
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        repository: guygrigsby/mtgfail
+        tags: latest
+        tag_with_sha: true
         
 
   release-gcp:
