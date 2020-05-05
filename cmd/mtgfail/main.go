@@ -17,7 +17,7 @@ var (
 
 func main() {
 
-	flag.StringVar(&def, "file", "./deck.txt", "The fully qualified name of the deck definition")
+	flag.StringVar(&def, "file", mtgfail.ExampleDeck, "The fully qualified name of the deck definition")
 	flag.StringVar(&bulk, "bulk", "./scryfall-default-cards.json", "The bulk data download")
 	flag.Parse()
 

@@ -10,7 +10,7 @@ import (
 
 func TestReadCardList(t *testing.T) {
 	log := log15.New()
-	f, err := os.Open("./deck.txt")
+	f, err := os.Open(ExampleDeck)
 	assert.NoError(t, err)
 	_, err = ReadCardList(f, log)
 	assert.NoError(t, err)

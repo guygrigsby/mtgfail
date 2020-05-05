@@ -20,7 +20,7 @@ var (
 
 func TestDesk(t *testing.T) {
 
-	flag.StringVar(&text, "file", "./deck.txt", "The fully qualified name of the deck definition")
+	flag.StringVar(&text, "file", mtgfail.ExampleDeck, "The fully qualified name of the deck definition")
 	flag.StringVar(&bulk, "bulk", "./scryfall-default-cards.json", "The bulk data download")
 
 	log := log15.New()
