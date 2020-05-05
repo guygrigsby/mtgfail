@@ -25,7 +25,7 @@ env:
   GKE_CLUSTER: cluster-1
   IMAGE: mtgfail
   REGISTRY_HOSTNAME: gcr.io
-  DEPLOYMENT_NAME: mgtfail-api
+  DEPLOYMENT_NAME: mtgfail-api
 
 jobs:
   all:
