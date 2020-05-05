@@ -20,6 +20,6 @@ jobs:
     # Run tests
     - name: Test
       run: |
-        docker build -t mtgfail-test:$SHORT_SHA -f Dockerfile.test
+        docker build -f Dockerfile.test .
 
 

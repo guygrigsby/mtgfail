@@ -56,7 +56,7 @@ jobs:
     steps:
     - name: Test
       run: |
-        docker build -t mtgfail-test:$SHORT_SHA -f Dockerfile.test
+        docker build -f Dockerfile.test .
 
   build:
     name: Build
