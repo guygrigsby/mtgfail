@@ -28,7 +28,7 @@ env:
   DEPLOYMENT_NAME: mgtfail-api
 
 jobs:
-  setup:
+  all:
     name: Setup
     runs-on: ubuntu-latest
     steps:
@@ -48,32 +48,17 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
-     
-  test:
-    name: Test
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
+    
     - name: Test
       run: |
         docker build -f Dockerfile.test .
 
-  build:
-    name: Build
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
     - name: Build
       run: |        
         docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$IMAGE":"$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
 
-  release-dockerhub:
-    name: Push Image to Dockerhub with tags SHA and latest
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
     - name: Push
       uses: docker/build-push-action@v1
       with:
@@ -82,23 +67,12 @@ jobs:
         repository: guygrigsby/mtgfail
         tags: latest
         tag_with_sha: true
-        
 
-  release-gcp:
-    name: Push Image with SHA
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
     - name: Build
       run: |        
         docker tag $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:$GITHUB_SHA $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:latest
         docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:latest
-     
-  deploy:
-    name: Deploy to api.mtg.fail
-    needs: release-gcp
-    runs-on: ubuntu-latest
-    steps:
+
     # Set up kustomize
     - name: Set up Kustomize
       run: |
