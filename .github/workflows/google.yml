@@ -25,7 +25,7 @@ env:
   GKE_CLUSTER: cluster-1
   IMAGE: mtgfail
   REGISTRY_HOSTNAME: gcr.io
-  DEPLOYMENT_NAME: mtgfail
+  DEPLOYMENT_NAME: mtgfail-api
 
 jobs:
   all:
@@ -59,7 +59,7 @@ jobs:
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
 
-    - name: Push
+    - name: Push Dockerhub
       uses: docker/build-push-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -68,7 +68,7 @@ jobs:
         tags: latest
         tag_with_sha: true
 
-    - name: Build
+    - name: Push GCR
       run: |        
         docker tag $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:$GITHUB_SHA $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:latest
         docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:latest
