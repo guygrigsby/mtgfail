@@ -97,6 +97,7 @@ jobs:
   deploy:
     name: Deploy to api.mtg.fail
     needs: release-gcp
+    runs-on: ubuntu-latest
     steps:
     # Set up kustomize
     - name: Set up Kustomize
