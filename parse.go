@@ -12,7 +12,7 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
-const ExampleDeck = "./deck.txt"
+const ExampleDeck = "examples/deck.txt"
 
 func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	f, err := os.Open(file)
