@@ -1,0 +1,21 @@
+steps:
+  # test it
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "mtgfail-test:$SHORT_SHA", "-f", "Dockerfile.test", "."]
+  # build it
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "gcr.io/snackend/mtgfail:$SHORT_SHA", "."]
+  # tag it latest
+- name: "gcr.io/cloud-builders/docker"
+  args: ["tag", "gcr.io/snackend/mtgfail:$SHORT_SHA", "gcr.io/snackend/mtgfail:latest"]
+  # push latest
+- name: "gcr.io/cloud-builders/docker"
+  args: ["push", "gcr.io/snackend/mtgfail:$SHORT_SHA"]
+  # deploy container image to GKE
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=deployment.yml
+  - --image=gcr.io/snackend/mtgfail:$SHORT_SHA
+  - --location=us-central1-c
+  - --cluster=cluster-1
