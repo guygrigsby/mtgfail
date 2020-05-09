@@ -29,7 +29,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			err error
 			r   io.ReadCloser
 		)
-		if req.Method == http.MethodGet || req.Method == http.MethodPost {
+		if req.Method == http.MethodGet {
 			q := req.URL.Query()
 			if len(q) == 0 {
 				// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
