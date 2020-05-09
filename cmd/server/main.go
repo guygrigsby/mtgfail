@@ -14,8 +14,16 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+// BuildDeck ...
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+
+		if (*req).Method == "OPTIONS" {
+			w.Header().Add("Access-Control-Allow-Origin", "https://mtg.fail, https://api.mtg.fail")
+			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+			w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Cache-Control")
+			return
+		}
 		var (
 			err error
 			r   io.ReadCloser
@@ -173,6 +181,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		}
 
 		w.Header().Add("Content-Type", "application/json")
+		w.Header().Add("Access-Control-Allow-Origin", "https:/api.mtg.fail")
 
 		_, err = fmt.Fprintf(w, "%s", b)
 		if err != nil {
