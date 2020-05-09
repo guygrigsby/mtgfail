@@ -19,7 +19,8 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 
 		if (*req).Method == "OPTIONS" {
-			w.Header().Add("Access-Control-Allow-Origin", "https://mtg.fail, https://api.mtg.fail")
+			w.Header().Add("Access-Control-Allow-Origin", "*")
+			//w.Header().Add("Access-Control-Allow-Origin", "https://mtg.fail, https://api.mtg.fail")
 			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Cache-Control")
 			return
