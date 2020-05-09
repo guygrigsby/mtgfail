@@ -17,12 +17,20 @@ import (
 // BuildDeck ...
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		log.Debug(
+			"Request",
+			"method", req.Method,
+			"caller", req.RemoteAddr,
+		)
 
-		if (*req).Method == "OPTIONS" {
+		if req.Method == "OPTIONS" {
 			w.Header().Add("Access-Control-Allow-Origin", "*")
-			//w.Header().Add("Access-Control-Allow-Origin", "https://mtg.fail, https://api.mtg.fail")
 			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Cache-Control")
+			log.Debug(
+				"Options",
+				"from", req,
+			)
 			return
 		}
 		var (
