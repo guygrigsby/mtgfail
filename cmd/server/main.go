@@ -146,9 +146,9 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		case "application/x-www-form-urlencoded":
 			//TODO
 		case "text/plain":
-			r = req.Body
 			fallthrough
 		default:
+			r = req.Body
 			deckList, err = mtgfail.ReadCardList(r, log)
 			if err != nil {
 				log.Error(
