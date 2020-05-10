@@ -38,18 +38,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, 
 					if err != nil {
 						return err
 					}
-					select {
-					case <-ctx.Done():
 
-						err := ctx.Err()
-						log.Error(
-							"Context Timeout",
-							"err", err,
-						)
-						return err
-					default:
-
-					}
 					return nil
 				})
 			if err != nil {

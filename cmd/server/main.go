@@ -28,12 +28,13 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			"headers", fmt.Sprintf("%+v", req.Header),
 		)
 
-		w.Header().Set("Content-Type", "text/html; charset=ascii")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
 		w.Header().Add("Access-Control-Allow-Methods", "*")
+		w.Header().Add("Cache-Control", "no-cache")
 
 		if req.Method == "OPTIONS" {
+			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode("OKOK")
 			return
 		}
@@ -41,7 +42,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			err     error
 			content io.ReadCloser = req.Body
 		)
-		ctx, cancel := context.WithTimeout(req.Context(), time.Second*15)
+		ctx, cancel := context.WithTimeout(req.Context(), time.Second*60)
 		defer cancel()
 		if req.Method == http.MethodGet {
 			q := req.URL.Query()
@@ -160,18 +161,6 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				return
 			}
 
-		}
-		select {
-		case <-ctx.Done():
-			err := ctx.Err()
-			log.Error(
-				"Context Timeout",
-				"err", err,
-			)
-			http.Error(w, "Timeout", http.StatusRequestTimeout)
-			return
-
-		default:
 		}
 
 		deckList := make(map[string]int)
