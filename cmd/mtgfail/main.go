@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"os"
@@ -57,7 +58,7 @@ func main() {
 		"entries", len(deckList),
 	)
 
-	deck, err := tts.BuildDeck(bulk, deckList, log)
+	deck, err := tts.BuildDeck(context.Background(), bulk, deckList, log)
 	if err != nil {
 		log.Error(
 			"Cannot build deck",

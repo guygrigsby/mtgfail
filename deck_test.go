@@ -1,6 +1,7 @@
 package mtgfail_test
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"io/ioutil"
@@ -21,7 +22,7 @@ var (
 func TestDesk(t *testing.T) {
 
 	flag.StringVar(&text, "file", mtgfail.ExampleDeck, "The fully qualified name of the deck definition")
-	flag.StringVar(&bulk, "bulk", "./scryfall-default-cards.json", "The bulk data download")
+	flag.StringVar(&bulk, "bulk", "./scryfall-default-cards-local.json", "The bulk data download")
 
 	log := log15.New()
 
@@ -34,7 +35,7 @@ func TestDesk(t *testing.T) {
 	deckList, err := mtgfail.ReadCardList(r, log)
 	assert.NoError(t, err)
 
-	deck, err := tts.BuildDeck(bulk, deckList, log)
+	deck, err := tts.BuildDeck(context.Background(), bulk, deckList, log)
 	assert.NoError(t, err)
 
 	dumpToFile(deck, "golden-deck.json")
