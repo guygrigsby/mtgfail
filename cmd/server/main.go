@@ -24,13 +24,16 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		)
 
 		if req.Method == "OPTIONS" {
+			w.Header().Set("Content-Type", "text/html; charset=ascii")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
 			w.Header().Add("Access-Control-Allow-Origin", "*")
 			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-			w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Cache-Control")
 			log.Debug(
 				"Options",
 				"from", req,
 			)
+			json.NewEncoder(w).Encode("OKOK")
 			return
 		}
 		var (
