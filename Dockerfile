@@ -12,6 +12,7 @@ FROM alpine AS runtime
 RUN apk update && apk --no-cache add ca-certificates git && update-ca-certificates
 
 WORKDIR /
+RUN rm scryfall-default-cards.json
 RUN wget https://archive.scryfall.com/json/scryfall-default-cards.json 
 RUN adduser -S -D -H -h /app appuser
 USER appuser
