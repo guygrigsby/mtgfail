@@ -23,12 +23,12 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			"caller", req.RemoteAddr,
 		)
 
+		w.Header().Set("Content-Type", "text/html; charset=ascii")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
+		w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+
 		if req.Method == "OPTIONS" {
-			w.Header().Set("Content-Type", "text/html; charset=ascii")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
-			w.Header().Add("Access-Control-Allow-Origin", "*")
-			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			log.Debug(
 				"Options",
 				"from", req,
@@ -46,6 +46,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
 				// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
 				w.WriteHeader(http.StatusOK)
+				json.NewEncoder(w).Encode("No params")
 				return
 			}
 			deckURI := q.Get("deck")
