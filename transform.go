@@ -9,6 +9,7 @@ import (
 	"golang.org/x/net/html"
 )
 
+// Normalize ...
 func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 
 	z := html.NewTokenizer(r)
@@ -40,7 +41,8 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 					}
 
 				} else if tt == html.EndTagToken {
-
+					log.Debug("html end token", "data", t.Data)
+					continue
 				} else {
 					log.Info("writing token", "data", t.Data)
 					_, err := w.WriteString(t.Data)
@@ -56,5 +58,9 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 			}
 		}
 	}
+	log.Debug(
+		"normalized",
+		"content", w.String(),
+	)
 	return ioutil.NopCloser(strings.NewReader(w.String())), nil
 }

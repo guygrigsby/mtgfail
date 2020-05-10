@@ -58,6 +58,7 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	return bulk, nil
 }
 
+// ReadCardList
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
 	//b, _ := ioutil.ReadAll(r)

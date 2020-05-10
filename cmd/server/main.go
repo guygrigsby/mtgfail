@@ -1,12 +1,16 @@
 package main
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/avast/retry-go"
 	"github.com/guygrigsby/mtgfail"
@@ -21,25 +25,24 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			"Request",
 			"method", req.Method,
 			"caller", req.RemoteAddr,
+			"headers", fmt.Sprintf("%+v", req.Header),
 		)
 
 		w.Header().Set("Content-Type", "text/html; charset=ascii")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
-		w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Add("Access-Control-Allow-Methods", "*")
 
 		if req.Method == "OPTIONS" {
-			log.Debug(
-				"Options",
-				"from", req,
-			)
 			json.NewEncoder(w).Encode("OKOK")
 			return
 		}
 		var (
-			err error
-			r   io.ReadCloser
+			err     error
+			content io.ReadCloser = req.Body
 		)
+		ctx, cancel := context.WithTimeout(req.Context(), time.Second*15)
+		defer cancel()
 		if req.Method == http.MethodGet {
 			q := req.URL.Query()
 			if len(q) == 0 {
@@ -72,19 +75,24 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				err := retry.Do(
 					func() error {
 						var err error
-						res, err = http.DefaultClient.Get(deckURI)
+						c := http.Client{
+							Timeout: 5 * time.Second,
+						}
+						res, err = c.Get(deckURI)
 						if err != nil {
 							return err
 						}
 						return nil
-					})
+					},
+					retry.Attempts(3),
+				)
 				if err != nil {
 					log.Error(
-						"cannot get deckbox deck",
+						"cannot get tappedout deck",
 						"err", err,
 						"uri", deckURI,
 					)
-					http.Error(w, "Cannot get deckbox deck deck URI", http.StatusServiceUnavailable)
+					http.Error(w, "Cannot get tappedout deck URI", http.StatusServiceUnavailable)
 					return
 				}
 				if res.StatusCode != 200 {
@@ -92,16 +100,20 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 						"Unexpected response status",
 						"status", res.Status,
 					)
-					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
+					http.Error(w, "Unexpected status code from tappedout", http.StatusBadGateway)
 					return
 
 				}
-				r = res.Body
+				content = res.Body
 				break
 
 			// https://deckbox.org/sets/2649137
 			case "deckbox.org":
 				deckURI = fmt.Sprintf("%s/export", deckURI)
+				log.Debug(
+					"deckbox",
+					"deckUri", deckURI,
+				)
 				var res *http.Response
 				err := retry.Do(
 					func() error {
@@ -131,7 +143,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 
 				}
 
-				r, err = mtgfail.Normalize(res.Body, log)
+				content, err = mtgfail.Normalize(res.Body, log)
 				if err != nil {
 					log.Error(
 						"Unexpected format for deck status",
@@ -149,21 +161,53 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			}
 
 		}
+		select {
+		case <-ctx.Done():
+			err := ctx.Err()
+			log.Error(
+				"Context Timeout",
+				"err", err,
+			)
+			http.Error(w, "Timeout", http.StatusRequestTimeout)
+			return
+
+		default:
+		}
 
 		deckList := make(map[string]int)
 
 		switch req.Header.Get("Content-Type") {
 		case "application/json":
 			//TODO
-			fallthrough
+			msg := "application/json not supported"
+			log.Error(
+				msg,
+			)
+			http.Error(w, "Empty deck list", http.StatusUnsupportedMediaType)
+			return
 		case "application/x-www-form-urlencoded":
 			//TODO
-			fallthrough
+			msg := "application/x-www-form-url-encoded  not supported"
+			log.Error(
+				msg,
+			)
+			http.Error(w, msg, http.StatusUnsupportedMediaType)
+			return
 		case "text/plain":
-			r = req.Body
-			fallthrough
-		default:
-			deckList, err = mtgfail.ReadCardList(r, log)
+			b, err := ioutil.ReadAll(content)
+			if err != nil {
+				log.Error(
+					"error reading body",
+					"err", err,
+				)
+				http.Error(w, "Can't read body", http.StatusInternalServerError)
+				return
+
+			}
+			req.Body.Close()
+			deckList, err = mtgfail.ReadCardList(
+				ioutil.NopCloser(
+					bytes.NewBuffer(b)), log)
 			if err != nil {
 				log.Error(
 					"Can't read cardfile",
@@ -172,10 +216,27 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				http.Error(w, "Can't read card list", http.StatusBadRequest)
 				return
 			}
+			if len(deckList) == 0 {
+				log.Error(
+					"Zero length decklist",
+					"content", string(b),
+				)
+				http.Error(w, "Empty deck list", http.StatusInternalServerError)
+				return
+
+			}
+		default:
+
+			msg := fmt.Sprintf("Unrecognized content type %s", req.Header.Get("Content-Type"))
+			log.Error(
+				msg,
+			)
+			http.Error(w, msg, http.StatusUnsupportedMediaType)
+			return
 
 		}
 
-		deck, err := tts.BuildDeck(cache, deckList, log)
+		deck, err := tts.BuildDeck(ctx, cache, deckList, log)
 		if err != nil {
 			log.Error(
 				"Cannot build deck",
@@ -196,7 +257,6 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		}
 
 		w.Header().Add("Content-Type", "application/json")
-		w.Header().Add("Access-Control-Allow-Origin", "https:/api.mtg.fail")
 
 		_, err = fmt.Fprintf(w, "%s", b)
 		if err != nil {

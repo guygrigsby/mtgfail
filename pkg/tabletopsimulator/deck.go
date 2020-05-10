@@ -1,18 +1,21 @@
 package tabletopsimulator
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/avast/retry-go"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
 
-func BuildDeck(bulk mtgfail.Bulk, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
+// BuildDeck ...
+func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
 	deck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
@@ -30,9 +33,22 @@ func BuildDeck(bulk mtgfail.Bulk, deckList map[string]int, log log15.Logger) (*D
 			err := retry.Do(
 				func() error {
 					var err error
-					res, err = http.DefaultClient.Get(uri)
+					c := http.Client{Timeout: 5 * time.Second}
+					res, err = c.Get(uri)
 					if err != nil {
 						return err
+					}
+					select {
+					case <-ctx.Done():
+
+						err := ctx.Err()
+						log.Error(
+							"Context Timeout",
+							"err", err,
+						)
+						return err
+					default:
+
 					}
 					return nil
 				})
