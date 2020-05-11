@@ -36,7 +36,7 @@ func main() {
 	)
 
 	r := mux.NewRouter()
-	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
+	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Cache-Control"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	origins := handlers.AllowedOrigins([]string{"*"})
 

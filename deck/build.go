@@ -28,15 +28,8 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			"headers", fmt.Sprintf("%+v", req.Header),
 		)
 
-		w.Header().Add("Access-Control-Allow-Origin", req.Header.Get("Origin"))
-		w.Header().Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Add("Cache-Control", "no-cache")
 
-		if req.Method == "OPTIONS" {
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode("OKOK")
-			return
-		}
 		var (
 			err     error
 			content io.ReadCloser = req.Body
