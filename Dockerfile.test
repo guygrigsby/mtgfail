@@ -8,4 +8,4 @@ ADD . /go/src/app/
 WORKDIR /go/src/app
 RUN wget https://archive.scryfall.com/json/scryfall-default-cards.json 
 
-RUN go test -v ./
+RUN go test -v ./...
