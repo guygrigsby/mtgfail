@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/guygrigsby/mtgfail"
-	tts "github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
+	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
 )
 
