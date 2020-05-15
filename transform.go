@@ -9,6 +9,24 @@ import (
 	"golang.org/x/net/html"
 )
 
+/*
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Card set print view" />
+    <title>Deckbox.org card set print view</title>
+</head>
+<body>
+        1 Brainstorm<br/>1 Thrasios, Triton Hero<br/>
+
+    <p><strong>Sideboard:</strong></p>
+
+
+</body>
+</html>
+*/
+
 // Normalize ...
 func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 
@@ -18,10 +36,9 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 	for tt := z.Next(); tt != html.ErrorToken; tt = z.Next() {
 		t := z.Token()
 		if tt == html.StartTagToken && t.Data == "body" {
-			log.Info("body", "data", t.Data)
+			log.Debug("body", "data", t.Data)
 
-			tt = z.Next()
-			for tt := z.Next(); tt != html.ErrorToken; tt = z.Next() {
+			for tt = z.Next(); tt != html.ErrorToken; tt = z.Next() {
 				t := z.Token()
 				log.Info("token", "data", t.Data)
 
