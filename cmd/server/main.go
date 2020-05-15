@@ -36,8 +36,6 @@ func main() {
 	)
 
 	r := mux.NewRouter()
-	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Cache-Control"})
-	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	origins := handlers.AllowedOrigins([]string{"*"})
 
 	r.HandleFunc("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +43,7 @@ func main() {
 	}))
 
 	r.HandleFunc("/", deck.BuildDeck(bulk, log))
-	if err = http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(r)); err != nil {
+	if err = http.ListenAndServe(":8080", handlers.CORS(origins)(r)); err != nil {
 		log.Error(
 			"Server failure",
 			"err", err,
