@@ -25,6 +25,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			"Request",
 			"method", req.Method,
 			"caller", req.RemoteAddr,
+			"params", fmt.Sprintf("%+v", req.URL.Query()),
 			"headers", fmt.Sprintf("%+v", req.Header),
 		)
 
@@ -149,6 +150,12 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 				break
 
 			default:
+				log.Debug(
+					"Unexpected deck Host",
+					"url", deckURI,
+					"Host", u.Host,
+				)
+
 				http.Error(w, "Unsupported deck host URI", http.StatusUnprocessableEntity)
 				return
 			}
@@ -174,7 +181,7 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			)
 			http.Error(w, msg, http.StatusUnsupportedMediaType)
 			return
-		case "text/plain":
+		case "text/plain", "":
 			b, err := ioutil.ReadAll(content)
 			if err != nil {
 				log.Error(
