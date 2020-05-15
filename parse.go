@@ -51,6 +51,11 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 			)
 			continue
 		}
+		//TODO it's gross, but scryfall adds the time of download as a param at the end and tts no likey
+		card.ImageUris.Small = strings.Split(card.ImageUris.Small, "?")[0]
+		card.ImageUris.Normal = strings.Split(card.ImageUris.Normal, "?")[0]
+		card.ImageUris.Large = strings.Split(card.ImageUris.Large, "?")[0]
+		card.ImageUris.Png = strings.Split(card.ImageUris.Png, "?")[0]
 		bulk[card.Name] = card
 
 	}

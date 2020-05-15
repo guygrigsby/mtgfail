@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/avast/retry-go"
@@ -114,18 +115,24 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 	)
 	var deckNumber int
 	cardNumber := 1
-	for _, names := range stacks {
+	for _, stack := range stacks {
 
 		log.Info(
 			"building stack",
-			"unique cards", len(names),
+			"unique cards", len(stack),
 		)
 		var (
+			deck = make(map[int]Card, len(stack))
 			ids  []int
-			deck map[int]Card = make(map[int]Card, len(names))
 			obs  []ContainedObject
+
+			doubleSiders = make(map[int]Card, len(stack))
+			dIDs         []int
+			dObs         []ContainedObject
 		)
-		for entry, count := range names {
+		var cardCount int
+		for entry, count := range stack {
+			cardCount += count
 			if entry == nil {
 
 				log.Warn(
@@ -133,7 +140,7 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 				)
 				continue
 			}
-
+			// Card multiples
 			for ; count > 0; count-- {
 				log.Debug(
 					"building card object card",
@@ -163,19 +170,50 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 					Transform: cardTx,
 				}
 				obs = append(obs, ob)
+				img := entry.ImageUris.Png
+
+				if len(entry.CardFaces) > 0 {
+					img = strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
+				}
+
 				card := Card{
-					FaceURL:      entry.ImageUris.Normal,
+					FaceURL:      img,
 					BackURL:      "https://www.frogtown.me/images/gatherer/CardBack.jpg",
 					NumHeight:    1,
 					NumWidth:     1,
 					BackIsHidden: true,
+				}
+				if len(entry.CardFaces) > 0 {
+					dcard := Card{
+						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
+						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
+						NumHeight:    1,
+						NumWidth:     1,
+						BackIsHidden: false,
+					}
+					cn := len(dIDs) + 1
+					did := cn * 100
+					dIDs = append(dIDs, did)
+					dob := ContainedObject{
+						CardID:    did,
+						Name:      "Card",
+						Nickname:  entry.Name,
+						Transform: cardTx,
+					}
+					dObs = append(dObs, dob)
+					doubleSiders[cn] = dcard
 				}
 
 				deck[cardNumber] = card
 
 				cardNumber++
 			}
-			deckNumber++
+			log.Debug(
+				"card stats",
+				"count", cardCount,
+				"decknumber", deckNumber,
+			)
+
 		}
 		var z int
 		if deckNumber == 0 {
@@ -196,6 +234,7 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			ScaleY: 1,
 			ScaleZ: 1,
 		}
+
 		state = append(state, ObjectState{
 			Name:             "DeckCustom",
 			ContainedObjects: obs,
@@ -203,6 +242,18 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			DeckIDs:          ids,
 			Transform:        stackTx,
 		})
+
+		stackTx.PosY = stackTx.PosY + 2
+		stackTx.PosZ = 180
+		state = append(state, ObjectState{
+			Name:             "DeckCustom",
+			ContainedObjects: dObs,
+			CustomDeck:       doubleSiders,
+			DeckIDs:          dIDs,
+			Transform:        stackTx,
+		})
+
+		deckNumber++
 	}
 	return &DeckFile{
 		ObjectStates: state,

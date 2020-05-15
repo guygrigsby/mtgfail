@@ -223,6 +223,12 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			return
 
 		}
+		if len(deckList) != 100 {
+			log.Error(
+				"Deck list strange number",
+				"count", len(deckList),
+			)
+		}
 
 		deck, err := tts.BuildDeck(ctx, cache, deckList, log)
 		if err != nil {

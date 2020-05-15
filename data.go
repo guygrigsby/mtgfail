@@ -21,6 +21,7 @@ type Entry struct {
 	OracleText      string        `json:"oracle_text"`
 	Colors          []string      `json:"colors"`
 	ColorIdentity   []string      `json:"color_identity"`
+	CardFaces       []CardFace    `json:"card_faces,omitempty"`
 	Legalities      Legalities    `json:"legalities"`
 	Games           []string      `json:"games"`
 	Reserved        bool          `json:"reserved"`
@@ -53,6 +54,20 @@ type Entry struct {
 	StorySpotlight  bool          `json:"story_spotlight"`
 	EdhrecRank      int           `json:"edhrec_rank"`
 	RelatedUris     RelatedUris   `json:"related_uris"`
+}
+type CardFace struct {
+	Object         string    `json:"object"`
+	Name           string    `json:"name"`
+	ManaCost       string    `json:"mana_cost"`
+	TypeLine       string    `json:"type_line"`
+	OracleText     string    `json:"oracle_text"`
+	Colors         []string  `json:"colors"`
+	Power          string    `json:"power"`
+	Toughness      string    `json:"toughness"`
+	Artist         string    `json:"artist"`
+	ArtistID       string    `json:"artist_id"`
+	IllustrationID string    `json:"illustration_id"`
+	ImageUris      ImageUris `json:"image_uris"`
 }
 type ImageUris struct {
 	Small      string `json:"small"`
