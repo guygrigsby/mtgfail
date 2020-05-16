@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -60,16 +61,44 @@ func main() {
 			http.Error(w, "", http.StatusInternalServerError)
 			return
 		}
-		_, err = io.Copy(w, r)
+
+		deckList, err := mtgfail.ReadCardList(r, log)
 		if err != nil {
+			_, err = io.Copy(w, r)
+			if err != nil {
+				log.Error(
+					"failed to parse data from request. Copying raw bytes through to response",
+					"err", err,
+				)
+				http.Error(w, "", http.StatusOK)
+				return
+			}
+		}
+		defer r.Close()
+
+		b, err := json.Marshal(deckList)
+		if err != nil {
+
 			log.Error(
-				"failed to copy data from request",
+				"Can't marshal deckfile",
 				"err", err,
 			)
-			http.Error(w, "", http.StatusInternalServerError)
 			return
+
 		}
-		r.Close()
+
+		w.Header().Add("Content-Type", "application/json")
+
+		_, err = fmt.Fprintf(w, "%s", b)
+		if err != nil {
+			log.Error(
+				"Can't write deckfile",
+				"err", err,
+			)
+			return
+
+		}
+		w.WriteHeader(200)
 
 	},
 	)
