@@ -6,6 +6,7 @@ require (
 	github.com/avast/retry-go v2.6.0+incompatible
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
+	github.com/google/martian v2.1.0+incompatible
 	github.com/gorilla/handlers v1.4.2
 	github.com/gorilla/mux v1.7.4
 	github.com/inconshreveable/log15 v0.0.0-20200109203555-b30bc20e4fd1

@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/gorilla/handlers"
@@ -43,6 +45,35 @@ func main() {
 	}))
 
 	r.HandleFunc("/", deck.BuildDeck(bulk, log))
+	r.HandleFunc("/site", func(w http.ResponseWriter, req *http.Request) {
+		log.Debug(
+			"Request",
+			"req", fmt.Sprintf("%+v", req),
+		)
+
+		r, err, status := deck.FetchDeck(req, log)
+		if status > 299 {
+			log.Error(
+				"failed to fetch deck",
+				"err", err,
+			)
+			http.Error(w, "", http.StatusInternalServerError)
+			return
+		}
+		_, err = io.Copy(w, r)
+		if err != nil {
+			log.Error(
+				"failed to copy data from request",
+				"err", err,
+			)
+			http.Error(w, "", http.StatusInternalServerError)
+			return
+		}
+		r.Close()
+
+	},
+	)
+
 	if err = http.ListenAndServe(":8080", handlers.CORS(origins)(r)); err != nil {
 		log.Error(
 			"Server failure",

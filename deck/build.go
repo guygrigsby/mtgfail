@@ -18,6 +18,126 @@ import (
 	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 )
 
+func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) {
+	q := req.URL.Query()
+	if len(q) == 0 {
+		// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
+		// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
+		return nil, nil, 200
+	}
+	var (
+		err     error
+		content io.ReadCloser = req.Body
+	)
+
+	deckURI := q.Get("deck")
+	u, err := url.Parse(deckURI)
+	if err != nil {
+
+		log.Error(
+			"Cannot parse deck uri",
+			"err", err,
+		)
+		return nil, err, http.StatusBadRequest
+	}
+	switch u.Host {
+	//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
+	case "tappedout.net":
+		deckURI = fmt.Sprintf("%s?fmt=txt", deckURI)
+		log.Debug(
+			"tappedout",
+			"deckUri", deckURI,
+		)
+		var res *http.Response
+		err := retry.Do(
+			func() error {
+				var err error
+				c := http.Client{
+					Timeout: 5 * time.Second,
+				}
+				res, err = c.Get(deckURI)
+				if err != nil {
+					return err
+				}
+				return nil
+			},
+			retry.Attempts(3),
+		)
+		if err != nil {
+			log.Error(
+				"cannot get tappedout deck",
+				"err", err,
+				"uri", deckURI,
+			)
+			return nil, fmt.Errorf("Cannot get tappedout deck: %w", err), http.StatusServiceUnavailable
+		}
+		if res.StatusCode != 200 {
+			log.Error(
+				"Unexpected response status",
+				"status", res.Status,
+			)
+			return nil, fmt.Errorf("Unexpected status code from tappedout"), http.StatusBadRequest
+
+		}
+		content = res.Body
+
+	// https://deckbox.org/sets/2649137
+	case "deckbox.org":
+		deckURI = fmt.Sprintf("%s/export", deckURI)
+		log.Debug(
+			"deckbox",
+			"deckUri", deckURI,
+		)
+		var res *http.Response
+		err := retry.Do(
+			func() error {
+				var err error
+				res, err = http.DefaultClient.Get(deckURI)
+				if err != nil {
+					return err
+				}
+				return nil
+			})
+		if err != nil {
+			log.Error(
+				"cannot get deckbox deck",
+				"err", err,
+				"uri", deckURI,
+			)
+			return nil, err, http.StatusServiceUnavailable
+		}
+		if res.StatusCode != 200 {
+			log.Error(
+				"Unexpected response status",
+				"status", res.Status,
+			)
+			return nil, fmt.Errorf("unexpected status %v", res.StatusCode), http.StatusBadGateway
+
+		}
+
+		content, err = mtgfail.Normalize(res.Body, log)
+		if err != nil {
+			log.Error(
+				"Unexpected format for deck status",
+				"err", err,
+				"url", deckURI,
+			)
+			return nil, err, http.StatusBadGateway
+		}
+		break
+
+	default:
+		log.Debug(
+			"Unexpected deck Host",
+			"url", deckURI,
+			"Host", u.Host,
+		)
+
+		return nil, fmt.Errorf("Unknown Host"), http.StatusUnprocessableEntity
+	}
+	return content, nil, 200
+}
+
 // BuildDeck ...
 func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -38,125 +158,14 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(req.Context(), time.Second*60)
 		defer cancel()
 		if req.Method == http.MethodGet {
-			q := req.URL.Query()
-			if len(q) == 0 {
-				// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
-				// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
-				w.WriteHeader(http.StatusOK)
-				json.NewEncoder(w).Encode("No params")
-				return
-			}
-			deckURI := q.Get("deck")
-			u, err := url.Parse(deckURI)
-			if err != nil {
-
+			var status int
+			content, err, status = FetchDeck(req, log)
+			if status > 299 {
 				log.Error(
-					"Cannot parse deck uri",
+					"failed to fetch deck",
 					"err", err,
 				)
-				http.Error(w, "Cannot parse deck URI", http.StatusBadRequest)
-				return
-			}
-			switch u.Host {
-			//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
-			case "tappedout.net":
-				deckURI = fmt.Sprintf("%s?fmt=txt", deckURI)
-				log.Debug(
-					"tappedout",
-					"deckUri", deckURI,
-				)
-				var res *http.Response
-				err := retry.Do(
-					func() error {
-						var err error
-						c := http.Client{
-							Timeout: 5 * time.Second,
-						}
-						res, err = c.Get(deckURI)
-						if err != nil {
-							return err
-						}
-						return nil
-					},
-					retry.Attempts(3),
-				)
-				if err != nil {
-					log.Error(
-						"cannot get tappedout deck",
-						"err", err,
-						"uri", deckURI,
-					)
-					http.Error(w, "Cannot get tappedout deck URI", http.StatusServiceUnavailable)
-					return
-				}
-				if res.StatusCode != 200 {
-					log.Error(
-						"Unexpected response status",
-						"status", res.Status,
-					)
-					http.Error(w, "Unexpected status code from tappedout", http.StatusBadGateway)
-					return
-
-				}
-				content = res.Body
-				break
-
-			// https://deckbox.org/sets/2649137
-			case "deckbox.org":
-				deckURI = fmt.Sprintf("%s/export", deckURI)
-				log.Debug(
-					"deckbox",
-					"deckUri", deckURI,
-				)
-				var res *http.Response
-				err := retry.Do(
-					func() error {
-						var err error
-						res, err = http.DefaultClient.Get(deckURI)
-						if err != nil {
-							return err
-						}
-						return nil
-					})
-				if err != nil {
-					log.Error(
-						"cannot get deckbox deck",
-						"err", err,
-						"uri", deckURI,
-					)
-					http.Error(w, "Cannot get deckbox deck deck URI", http.StatusServiceUnavailable)
-					return
-				}
-				if res.StatusCode != 200 {
-					log.Error(
-						"Unexpected response status",
-						"status", res.Status,
-					)
-					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
-					return
-
-				}
-
-				content, err = mtgfail.Normalize(res.Body, log)
-				if err != nil {
-					log.Error(
-						"Unexpected format for deck status",
-						"err", err,
-						"url", deckURI,
-					)
-					http.Error(w, "Unexpected status code from deckbox", http.StatusBadGateway)
-					return
-				}
-				break
-
-			default:
-				log.Debug(
-					"Unexpected deck Host",
-					"url", deckURI,
-					"Host", u.Host,
-				)
-
-				http.Error(w, "Unsupported deck host URI", http.StatusUnprocessableEntity)
+				http.Error(w, err.Error(), http.StatusUnsupportedMediaType)
 				return
 			}
 
