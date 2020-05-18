@@ -18,4 +18,4 @@ steps:
   - --filename=deployment.yml
   - --image=gcr.io/snackend/mtgfail:$SHORT_SHA
   - --location=us-central1-c
-  - --cluster=cluster-1
+  - --cluster=cluster-3
