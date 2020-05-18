@@ -15,21 +15,18 @@ import (
 )
 
 var (
-	text string
-	bulk string
+	text = flag.String("file", mtgfail.ExampleDeck, "The fully qualified name of the deck definition")
+	bulk = flag.String("bulk", "./scryfall-default-cards.json", "The bulk data download")
 )
 
 func TestDesk(t *testing.T) {
 
-	flag.StringVar(&text, "file", mtgfail.ExampleDeck, "The fully qualified name of the deck definition")
-	flag.StringVar(&bulk, "bulk", "./scryfall-default-cards.json", "The bulk data download")
-
 	log := log15.New()
 
-	bulk, err := mtgfail.ReadBulk(bulk, log)
+	bulk, err := mtgfail.ReadBulk(*bulk, log)
 	assert.NoError(t, err)
 
-	r, err := os.Open(text)
+	r, err := os.Open(*text)
 	assert.NoError(t, err)
 
 	deckList, err := mtgfail.ReadCardList(r, log)

@@ -45,7 +45,9 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 	}))
 
-	r.HandleFunc("/", deck.BuildDeck(bulk, log))
+	r.HandleFunc("/", deck.BuildDeck(deck.TableTopSimulator, bulk, log))
+	r.HandleFunc("/deck", deck.BuildDeck(deck.ScryfallEntry, bulk, log))
+
 	r.HandleFunc("/site", func(w http.ResponseWriter, req *http.Request) {
 		log.Debug(
 			"Request",

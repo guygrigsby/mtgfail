@@ -18,6 +18,13 @@ import (
 	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 )
 
+type Format int
+
+const (
+	TableTopSimulator Format = iota
+	ScryfallEntry
+)
+
 func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) {
 	q := req.URL.Query()
 	if len(q) == 0 {
@@ -139,7 +146,7 @@ func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) 
 }
 
 // BuildDeck ...
-func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
+func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		log.Debug(
 			"Request",
@@ -239,7 +246,15 @@ func BuildDeck(cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
 			)
 		}
 
-		deck, err := tts.BuildDeck(ctx, cache, deckList, log)
+		var deck interface{}
+
+		switch f {
+		case TableTopSimulator:
+			deck, err = tts.BuildDeck(ctx, cache, deckList, log)
+		case ScryfallEntry:
+			deck, err = mtgfail.BuildDeck(ctx, cache, deckList, log)
+		}
+
 		if err != nil {
 			log.Error(
 				"Cannot build deck",

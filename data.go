@@ -1,5 +1,9 @@
 package mtgfail
 
+type Deck struct {
+	Cards []*CardShort
+}
+
 type Bulk map[string]*Entry
 
 type Entry struct {
