@@ -39,7 +39,6 @@ func main() {
 	)
 
 	r := mux.NewRouter()
-	origins := handlers.AllowedOrigins([]string{"*"})
 
 	r.HandleFunc("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -105,7 +104,7 @@ func main() {
 	},
 	)
 
-	if err = http.ListenAndServe(":8080", handlers.CORS(origins)(r)); err != nil {
+	if err = http.ListenAndServe(":8080", handlers.CORS()(r)); err != nil {
 		log.Error(
 			"Server failure",
 			"err", err,

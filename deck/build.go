@@ -154,6 +154,7 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 			"caller", req.RemoteAddr,
 			"params", fmt.Sprintf("%+v", req.URL.Query()),
 			"headers", fmt.Sprintf("%+v", req.Header),
+			"req", fmt.Sprintf("%+v", req),
 		)
 
 		w.Header().Add("Cache-Control", "no-cache")
@@ -169,13 +170,30 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 			content, err, status = FetchDeck(req, log)
 			if status > 299 {
 				log.Error(
+					"unexpected return status",
+					"status", status,
+				)
+				http.Error(w, err.Error(), http.StatusUnsupportedMediaType)
+				return
+			}
+			if err != nil {
+				log.Error(
 					"failed to fetch deck",
 					"err", err,
 				)
 				http.Error(w, err.Error(), http.StatusUnsupportedMediaType)
 				return
+
 			}
 
+		}
+
+		if content == nil {
+			log.Error(
+				"failed to get content",
+			)
+			http.Error(w, "No content", http.StatusInternalServerError)
+			return
 		}
 
 		deckList := make(map[string]int)
