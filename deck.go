@@ -60,6 +60,7 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 
 					return nil
 				})
+
 			if err != nil {
 				log.Error(
 					"cannot send request to scryfall",
@@ -68,6 +69,7 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 				)
 				continue
 			}
+
 			if res.StatusCode != 200 {
 				log.Error(
 					"Unexpected response status",
@@ -86,8 +88,8 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 				)
 				continue
 			}
-			var autoComplete AutoComplete
 
+			var autoComplete AutoComplete
 			err = json.Unmarshal(b, &autoComplete)
 			if err != nil {
 				log.Error(
@@ -96,6 +98,7 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 				)
 				continue
 			}
+
 			correctName := autoComplete.Data[0]
 			entry = bulk[correctName]
 			bulk[name] = entry
@@ -121,11 +124,6 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 		for i := 0; i < count; i++ {
 			deck.Cards = append(deck.Cards, card)
 		}
-		log.Info(
-			"getting info for card name",
-			"count", count,
-			"name", name,
-		)
 
 	}
 	return &deck, nil
