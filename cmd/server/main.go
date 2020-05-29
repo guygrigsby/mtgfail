@@ -39,6 +39,19 @@ func main() {
 	)
 
 	r := mux.NewRouter()
+	r.Use(
+		mux.MiddlewareFunc(func(h http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+				log.Info(
+					"Request",
+					"Value", fmt.Sprintf("%+v", r),
+				)
+
+				h.ServeHTTP(w, r)
+			})
+		}),
+	)
 
 	r.HandleFunc("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
