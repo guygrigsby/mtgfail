@@ -42,17 +42,18 @@ spec:
       port: 8080
       targetPort: 8080
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
 metadata:
+  name: {{.app}}-{{.env}}-ingress
   annotations:
+    kubernetes.io/ingress.allow-http: "false"          # Enable port 80 access
+    kubernetes.io/ingress.global-static-ip-name: "mtgfail" # Name of the static global IP address in GCP
     ingress.gcp.kubernetes.io/pre-shared-cert: mcrt-de6a3a52-77d4-4aa0-8ba9-b919a02c8d68
-    networking.gke.io/managed-certificates: api-mtg-fail
-  name: mtgfail-api
-  namespace: mtgfail
 spec:
-  backend:
-    serviceName: mtgfail-api
-    servicePort: 8080
-status:
-  loadBalancer: {}
+  rules:
+    - host: api.mtg.fail
+      http:
+        paths:
+          - path: */
+            backend:
+              serviceName: mtgfail-api
+              servicePort: 8080
