@@ -52,6 +52,10 @@ func main() {
 			})
 		}),
 	)
+	// GCP load balance health check is killing me. Find out why it can't stay assigned.
+	r.HandleFunc("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
 
 	r.HandleFunc("/healthz", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
