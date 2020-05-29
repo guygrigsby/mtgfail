@@ -39,19 +39,19 @@ func main() {
 	)
 
 	r := mux.NewRouter()
-	r.Use(
-		mux.MiddlewareFunc(func(h http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	//r.Use(
+	//	mux.MiddlewareFunc(func(h http.Handler) http.Handler {
+	//		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-				log.Info(
-					"Request",
-					"Value", fmt.Sprintf("%+v", r),
-				)
+	//			log.Info(
+	//				"Request",
+	//				"Value", fmt.Sprintf("%+v", r),
+	//			)
 
-				h.ServeHTTP(w, r)
-			})
-		}),
-	)
+	//			h.ServeHTTP(w, r)
+	//		})
+	//	}),
+	//)
 	// GCP load balance health check is killing me. Find out why it can't stay assigned.
 	r.HandleFunc("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
