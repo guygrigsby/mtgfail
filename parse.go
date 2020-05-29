@@ -66,11 +66,6 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 // ReadCardList
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
-	//b, _ := ioutil.ReadAll(r)
-	log.Debug(
-		"scanning ",
-	//	"content", string(b),
-	)
 	cards := make(map[string]int)
 	scanner := bufio.NewScanner(r)
 	defer r.Close()
@@ -78,10 +73,6 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()
-		log.Debug(
-			"scanning line",
-			"val", line,
-		)
 
 		lineScanner := bufio.NewScanner(strings.NewReader(line))
 		lineScanner.Split(bufio.ScanWords)
@@ -106,10 +97,6 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 		sb := strings.Builder{}
 		for lineScanner.Scan() {
 			txt := lineScanner.Text()
-			log.Debug(
-				"scanning word token name",
-				"val", txt,
-			)
 			sb.WriteString(txt)
 			sb.WriteString(" ")
 

@@ -176,6 +176,7 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 				http.Error(w, err.Error(), http.StatusUnsupportedMediaType)
 				return
 			}
+
 			if err != nil {
 				log.Error(
 					"failed to fetch deck",
@@ -238,6 +239,7 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 				http.Error(w, "Can't read card list", http.StatusBadRequest)
 				return
 			}
+
 			if len(deckList) == 0 {
 				log.Error(
 					"Zero length decklist",
@@ -256,12 +258,6 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 			http.Error(w, msg, http.StatusUnsupportedMediaType)
 			return
 
-		}
-		if len(deckList) != 100 {
-			log.Error(
-				"Deck list strange number",
-				"count", len(deckList),
-			)
 		}
 
 		var deck interface{}
