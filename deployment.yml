@@ -43,7 +43,7 @@ spec:
       targetPort: 8080
 ---
 metadata:
-  name: {{.app}}-{{.env}}-ingress
+  name: mtg-fail-ingress
   annotations:
     kubernetes.io/ingress.allow-http: "false"          # Enable port 80 access
     kubernetes.io/ingress.global-static-ip-name: "mtgfail" # Name of the static global IP address in GCP
