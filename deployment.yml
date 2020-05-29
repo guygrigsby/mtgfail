@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mtgfail-api
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: mtgfail-api
@@ -41,3 +41,29 @@ spec:
     - nodePort:
       port: 8080
       targetPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: mcrt-a6848374-2a6a-440c-806b-6252550d13b8
+    ingress.kubernetes.io/backends: '{"k8s-be-30989--b9099299c98098b5":"HEALTHY"}'
+    ingress.kubernetes.io/forwarding-rule: k8s-fw-mtgfail-mtgfail--b9099299c98098b5
+    ingress.kubernetes.io/https-forwarding-rule: k8s-fws-mtgfail-mtgfail--b9099299c98098b5
+    ingress.kubernetes.io/https-target-proxy: k8s-tps-mtgfail-mtgfail--b9099299c98098b5
+    ingress.kubernetes.io/ssl-cert: mcrt-a6848374-2a6a-440c-806b-6252550d13b8
+    ingress.kubernetes.io/static-ip: k8s-fw-mtgfail-mtgfail--b9099299c98098b5
+    ingress.kubernetes.io/target-proxy: k8s-tp-mtgfail-mtgfail--b9099299c98098b5
+    ingress.kubernetes.io/url-map: k8s-um-mtgfail-mtgfail--b9099299c98098b5
+    networking.gke.io/managed-certificates: mtgfail
+  generation: 1
+  name: mtgfail
+  namespace: mtgfail
+spec:
+  backend:
+    serviceName: mtgfail-api
+    servicePort: 8080
+status:
+  loadBalancer:
+    ingress:
+    - ip: 35.227.210.133
