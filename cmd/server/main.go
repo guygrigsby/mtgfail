@@ -57,10 +57,10 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 	}))
 
-	r.HandleFunc("/", deck.BuildDeck(deck.TableTopSimulator, bulk, log))
-	r.HandleFunc("/deck", deck.BuildDeck(deck.ScryfallEntry, bulk, log))
+	r.HandleFunc("/tts", deck.BuildDeck(deck.TableTopSimulator, bulk, log))
+	r.HandleFunc("/scryfall", deck.BuildDeck(deck.ScryfallEntry, bulk, log))
 
-	r.HandleFunc("/site", func(w http.ResponseWriter, req *http.Request) {
+	r.HandleFunc("/list", func(w http.ResponseWriter, req *http.Request) {
 		log.Debug(
 			"Request",
 			"req", fmt.Sprintf("%+v", req),

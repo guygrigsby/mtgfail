@@ -55,6 +55,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, 
 					"Unexpected response status",
 					"status", res.Status,
 				)
+
 				continue
 
 			}
@@ -79,9 +80,11 @@ func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, 
 				continue
 			}
 			correctName := autoComplete.Data[0]
+
 			entry = bulk[correctName]
+			// set it in the local data
 			bulk[name] = entry
-			log.Debug(
+			log.Info(
 				"Scryfall autocomplete success",
 				"original", name,
 				"corrected", correctName,
@@ -90,11 +93,6 @@ func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, 
 		}
 
 		deck[entry] = count
-		log.Info(
-			"getting info for card name",
-			"count", count,
-			"name", name,
-		)
 
 	}
 
@@ -142,12 +140,6 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			}
 			// Card multiples
 			for ; count > 0; count-- {
-				log.Debug(
-					"building card object card",
-					"count", count,
-					"name", entry.Name,
-					"cardnumber", cardNumber,
-				)
 
 				cardTx := Transform{
 					PosX:   0,
@@ -170,27 +162,52 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 					Transform: cardTx,
 				}
 				obs = append(obs, ob)
-				img := entry.ImageUris.Png
+				var img string
+				// Double sider
+				if len(entry.CardFaces) > 1 {
+					/*
+											      "Name": "Card",
+						      "CustomDeck": {
+						        "1": {
+						          "FaceURL": "https://www.frogtown.me/Images/V1/cc750c64-fd83-4b7b-9a40-a99213e6fa6d.jpg",
+						          "BackURL": "https://www.frogtown.me/Images/V1/8ce7af86-2a0b-426b-8f7b-a49d6c956141.jpg",
+						          "NumHeight": 1,
+						          "NumWidth": 1,
+						          "BackIsHidden": true
+						        }
+						      },
+						      "Transform": {
+						        "posX": 6.6000000000000005,
+						        "posY": 1,
+						        "posZ": 0,
+						        "rotX": 0,
+						        "rotY": 180,
+						        "rotZ": 0,
+						        "scaleX": 1,
+						        "scaleY": 1,
+						        "scaleZ": 1
+						      },
+						      "CardID": 100,
+						      "Nickname": "Jace, Vryn's Prodigy // Jace, Telepath Unbound"
+						    }
+						  ]
+						}
 
-				if len(entry.CardFaces) > 0 {
-					img = strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
-				}
-
-				card := Card{
-					FaceURL:      img,
-					BackURL:      "https://www.frogtown.me/images/gatherer/CardBack.jpg",
-					NumHeight:    1,
-					NumWidth:     1,
-					BackIsHidden: true,
-				}
-				if len(entry.CardFaces) > 0 {
-					dcard := Card{
+					*/
+					token := Card{
 						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
 						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
 						NumHeight:    1,
 						NumWidth:     1,
-						BackIsHidden: false,
+						BackIsHidden: true,
 					}
+					log.Debug(
+						"Double sided card",
+						"name", entry.Name,
+						"face1", strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
+						"face2", strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
+					)
+
 					cn := len(dIDs) + 1
 					did := cn * 100
 					dIDs = append(dIDs, did)
@@ -200,19 +217,26 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 						Nickname:  entry.Name,
 						Transform: cardTx,
 					}
+
 					dObs = append(dObs, dob)
-					doubleSiders[cn] = dcard
+					doubleSiders[cn] = token
+					img = strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
+				} else {
+					img = entry.ImageUris.Large
+				}
+
+				card := Card{
+					FaceURL:      img,
+					BackURL:      "https://www.frogtown.me/images/gatherer/CardBack.jpg",
+					NumHeight:    1,
+					NumWidth:     1,
+					BackIsHidden: true,
 				}
 
 				deck[cardNumber] = card
 
 				cardNumber++
 			}
-			log.Debug(
-				"card stats",
-				"count", cardCount,
-				"decknumber", deckNumber,
-			)
 
 		}
 		var z int
@@ -242,16 +266,16 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			DeckIDs:          ids,
 			Transform:        stackTx,
 		})
-
-		stackTx.PosY = stackTx.PosY + 2
-		stackTx.PosZ = 180
-		state = append(state, ObjectState{
-			Name:             "DeckCustom",
-			ContainedObjects: dObs,
-			CustomDeck:       doubleSiders,
-			DeckIDs:          dIDs,
-			Transform:        stackTx,
-		})
+		for _, c := range dObs {
+			stackTx.PosY = stackTx.PosY + 2
+			state = append(state, ObjectState{
+				Name:       "Card",
+				CustomDeck: doubleSiders,
+				Transform:  stackTx,
+				CardID:     c.CardID,
+				Nickname:   c.Nickname,
+			})
+		}
 
 		deckNumber++
 	}
@@ -292,8 +316,10 @@ type ContainedObject struct {
 
 type ObjectState struct {
 	Name             string            `json:"Name"`
-	ContainedObjects []ContainedObject `json:"ContainedObjects"`
+	ContainedObjects []ContainedObject `json:"ContainedObjects,omitempty"`
 	CustomDeck       map[int]Card      `json:"CustomDeck"`
-	DeckIDs          []int             `json:"DeckIDs"`
+	DeckIDs          []int             `json:"DeckIDs,omitempty"`
 	Transform        Transform         `json:"Transform"`
+	CardID           int               `json:"CardID,omitempty"`
+	Nickname         string            `json:"Nickname,omitempty"`
 }
