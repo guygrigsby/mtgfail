@@ -39,19 +39,7 @@ func main() {
 	)
 
 	r := mux.NewRouter()
-	//r.Use(
-	//	mux.MiddlewareFunc(func(h http.Handler) http.Handler {
-	//		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-	//			log.Info(
-	//				"Request",
-	//				"Value", fmt.Sprintf("%+v", r),
-	//			)
-
-	//			h.ServeHTTP(w, r)
-	//		})
-	//	}),
-	//)
 	// GCP load balance health check is killing me. Find out why it can't stay assigned.
 	r.HandleFunc("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -121,7 +109,9 @@ func main() {
 	},
 	)
 
-	if err = http.ListenAndServe(":8080", handlers.CORS()(r)); err != nil {
+	if err = http.ListenAndServe(":8080", handlers.CORS(
+		handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin"}),
+	)(r)); err != nil {
 		log.Error(
 			"Server failure",
 			"err", err,

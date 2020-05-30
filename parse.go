@@ -3,6 +3,7 @@ package mtgfail
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -61,6 +62,19 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	}
 
 	return bulk, nil
+}
+
+func ConvertToPairText(deck *Deck) (map[string]int, error) {
+	cards := make(map[string]int)
+	if len(deck.Cards) == 0 {
+		return nil, fmt.Errorf("Zero length deck %+v", deck)
+	}
+	for _, card := range deck.Cards {
+		count := cards[card.Name]
+		count++
+		cards[card.Name] = count
+	}
+	return cards, nil
 }
 
 // ReadCardList

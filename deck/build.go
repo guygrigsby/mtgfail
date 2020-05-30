@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/avast/retry-go"
@@ -21,6 +22,8 @@ import (
 type Format int
 
 const (
+	MaxAllowedContentLength = 50000
+
 	TableTopSimulator Format = iota
 	ScryfallEntry
 )
@@ -32,6 +35,7 @@ func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) 
 		// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
 		return nil, nil, 200
 	}
+
 	var (
 		err     error
 		content io.ReadCloser = req.Body
@@ -157,6 +161,23 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 			"req", fmt.Sprintf("%+v", req),
 		)
 
+		if req.Header.Get(http.CanonicalHeaderKey("Expect")) == "100-continue" {
+			l, err := strconv.Atoi(req.Header.Get(http.CanonicalHeaderKey("Content-Length")))
+			if err != nil {
+				log.Error(
+					"cannot parse content length for 100-continue",
+					"err", err,
+				)
+				http.Error(w, err.Error(), http.StatusExpectationFailed)
+			}
+			if l > MaxAllowedContentLength {
+				w.WriteHeader(http.StatusExpectationFailed)
+				return
+			}
+
+			w.WriteHeader(http.StatusContinue)
+			return
+		}
 		w.Header().Add("Cache-Control", "no-cache")
 
 		var (
@@ -165,7 +186,8 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 		)
 		ctx, cancel := context.WithTimeout(req.Context(), time.Second*60)
 		defer cancel()
-		if req.Method == http.MethodGet {
+		switch {
+		case req.Method == http.MethodGet:
 			var status int
 			content, err, status = FetchDeck(req, log)
 			if status > 299 {
@@ -187,6 +209,10 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 
 			}
 
+		case req.Method == http.MethodPost:
+			// leave the body alone!
+			content = req.Body
+
 		}
 
 		if content == nil {
@@ -201,13 +227,45 @@ func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc 
 
 		switch req.Header.Get("Content-Type") {
 		case "application/json":
-			//TODO
-			msg := "application/json not supported"
-			log.Error(
-				msg,
+			b, err := ioutil.ReadAll(content)
+			if err != nil {
+				log.Error(
+					"error reading body",
+					"err", err,
+				)
+				http.Error(w, "Can't read body", http.StatusInternalServerError)
+				return
+
+			}
+			req.Body.Close()
+			var deck mtgfail.Deck
+			err = json.Unmarshal(b, &deck)
+			if err != nil {
+				msg := "cannot unmarshal JSON deck"
+				log.Error(
+					msg,
+				)
+
+				http.Error(w, msg, http.StatusBadRequest)
+				return
+			}
+			log.Debug(
+				"json body",
+				"body", string(b),
+				"marshalled", fmt.Sprintf("%+v", deck),
 			)
-			http.Error(w, "Empty deck list", http.StatusUnsupportedMediaType)
-			return
+
+			deckList, err = mtgfail.ConvertToPairText(&deck)
+			if err != nil {
+				msg := "empty deck"
+				log.Error(
+					msg,
+				)
+
+				http.Error(w, msg, http.StatusBadRequest)
+				return
+			}
+
 		case "application/x-www-form-urlencoded":
 			//TODO
 			msg := "application/x-www-form-url-encoded  not supported"
