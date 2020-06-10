@@ -28,20 +28,12 @@ const (
 	ScryfallEntry
 )
 
-func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) {
-	q := req.URL.Query()
-	if len(q) == 0 {
-		// GCP load balancer health checks are garbage. Somehow, they always end up at '/'
-		// This was I don' spend hours softing out why my pods are unhealthy. TODO fix it right
-		return nil, nil, 200
-	}
-
+func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error, int) {
 	var (
 		err     error
-		content io.ReadCloser = req.Body
+		content io.ReadCloser
 	)
 
-	deckURI := q.Get("deck")
 	u, err := url.Parse(deckURI)
 	if err != nil {
 
@@ -149,6 +141,16 @@ func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) 
 	return content, nil, 200
 }
 
+// BuildTTSDeck ...
+func BuildTTSDeck(cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
+	return BuildDeck(TableTopSimulator, cache, log)
+}
+
+// BuildInternalDeck ...
+func BuildInternalDeck(cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
+	return BuildDeck(ScryfallEntry, cache, log)
+}
+
 // BuildDeck ...
 func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -189,7 +191,23 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 		switch {
 		case req.Method == http.MethodGet:
 			var status int
-			content, err, status = FetchDeck(req, log)
+			q, err := url.ParseQuery(req.URL.RawQuery)
+			if err != nil {
+				log.Error(
+					"unable to parse query params",
+					"err", err,
+				)
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			if len(q) == 0 {
+				// GCP load balancer health checks are garbage.
+				// Somehow, they always end up at '/'
+				return
+			}
+
+			content, err, status = FetchDeck(q.Get("deck"), log)
 			if status > 299 {
 				log.Error(
 					"unexpected return status",
@@ -266,14 +284,6 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 				return
 			}
 
-		case "application/x-www-form-urlencoded":
-			//TODO
-			msg := "application/x-www-form-url-encoded  not supported"
-			log.Error(
-				msg,
-			)
-			http.Error(w, msg, http.StatusUnsupportedMediaType)
-			return
 		case "text/plain", "":
 			b, err := ioutil.ReadAll(content)
 			if err != nil {

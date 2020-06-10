@@ -49,16 +49,23 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 	}))
 
-	r.HandleFunc("/tts", deck.BuildDeck(deck.TableTopSimulator, bulk, log))
-	r.HandleFunc("/scryfall", deck.BuildDeck(deck.ScryfallEntry, bulk, log))
+	r.HandleFunc("/tts", deck.BuildTTSDeck(bulk, log))
+	r.HandleFunc("/scryfall", deck.BuildInternalDeck(bulk, log))
 
 	r.HandleFunc("/list", func(w http.ResponseWriter, req *http.Request) {
 		log.Debug(
 			"Request",
 			"req", fmt.Sprintf("%+v", req),
 		)
+		q := req.URL.Query()
 
-		r, err, status := deck.FetchDeck(req, log)
+		var (
+			err error
+		)
+
+		deckURI := q.Get("deck")
+
+		r, err, status := deck.FetchDeck(deckURI, log)
 		if status > 299 {
 			log.Error(
 				"failed to fetch deck",
