@@ -327,7 +327,7 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 			return
 
 		}
-
+		go cache.Warm(keySet(deckList))
 		var deck interface{}
 
 		switch f {
@@ -368,4 +368,11 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 
 		}
 	}
+}
+func keySet(m map[string]int) []string {
+	var s []string
+	for k := range m {
+		s = append(s, k)
+	}
+	return s
 }

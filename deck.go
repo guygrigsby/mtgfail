@@ -36,7 +36,6 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 			Cards: nil,
 		}
 	)
-
 	for name, count := range deckList {
 		entry := bulk.Get(name)
 		if entry == nil {
