@@ -150,7 +150,7 @@ func FetchDeck(req *http.Request, log log15.Logger) (io.ReadCloser, error, int) 
 }
 
 // BuildDeck ...
-func BuildDeck(f Format, cache mtgfail.Bulk, log log15.Logger) http.HandlerFunc {
+func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		log.Debug(
 			"Request",

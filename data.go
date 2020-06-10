@@ -1,11 +1,18 @@
 package mtgfail
 
+// CardStore ...
+type CardStore interface {
+	Get(string) *Entry
+	Put(string, *Entry) error
+	Count() int
+}
+
+// Deck ...
 type Deck struct {
 	Cards []*CardShort
 }
 
-type Bulk map[string]*Entry
-
+// Entry ...
 type Entry struct {
 	Object          string        `json:"object"`
 	ID              string        `json:"id"`
@@ -59,6 +66,8 @@ type Entry struct {
 	EdhrecRank      int           `json:"edhrec_rank"`
 	RelatedUris     RelatedUris   `json:"related_uris"`
 }
+
+// CardFace ...
 type CardFace struct {
 	Object         string    `json:"object"`
 	Name           string    `json:"name"`
@@ -73,6 +82,8 @@ type CardFace struct {
 	IllustrationID string    `json:"illustration_id"`
 	ImageUris      ImageUris `json:"image_uris"`
 }
+
+// ImageUris ...
 type ImageUris struct {
 	Small      string `json:"small"`
 	Normal     string `json:"normal"`
@@ -81,6 +92,8 @@ type ImageUris struct {
 	ArtCrop    string `json:"art_crop"`
 	BorderCrop string `json:"border_crop"`
 }
+
+// Legalities ...
 type Legalities struct {
 	Standard  string `json:"standard"`
 	Future    string `json:"future"`
@@ -96,6 +109,8 @@ type Legalities struct {
 	Duel      string `json:"duel"`
 	Oldschool string `json:"oldschool"`
 }
+
+// RelatedUris ...
 type RelatedUris struct {
 	TcgplayerDecks string `json:"tcgplayer_decks"`
 	Edhrec         string `json:"edhrec"`
