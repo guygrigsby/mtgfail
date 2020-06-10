@@ -68,6 +68,8 @@ func ReadBulk(file string, log log15.Logger) (CardStore, error) {
 
 type store map[string]*Entry
 
+func (s store) Warm(_ []string) {
+}
 func (s store) Count() int {
 	return len(s)
 }
