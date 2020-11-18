@@ -15,7 +15,9 @@ import (
 	"github.com/avast/retry-go"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
+	"golang.org/x/sync/errgroup"
 
+	"github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
 	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 )
 
@@ -26,6 +28,7 @@ const (
 
 	TableTopSimulator Format = iota
 	ScryfallEntry
+	All
 )
 
 func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error, int) {
@@ -127,7 +130,6 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error, int) {
 			)
 			return nil, err, http.StatusBadGateway
 		}
-		break
 
 	default:
 		log.Debug(
@@ -149,6 +151,11 @@ func BuildTTSDeck(cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
 // BuildInternalDeck ...
 func BuildInternalDeck(cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
 	return BuildDeck(ScryfallEntry, cache, log)
+}
+
+// BuildAll ...
+func BuildAll(cache mtgfail.CardStore, log log15.Logger) http.HandlerFunc {
+	return BuildDeck(All, cache, log)
 }
 
 // BuildDeck ...
@@ -335,6 +342,55 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 			deck, err = tts.BuildDeck(ctx, cache, deckList, log)
 		case ScryfallEntry:
 			deck, err = mtgfail.BuildDeck(ctx, cache, deckList, log)
+		case All:
+			ret := &DualDeck{}
+			g, ctx := errgroup.WithContext(ctx)
+			g.Go(func() error {
+				ttsDeck, err := tts.BuildDeck(ctx, cache, deckList, log)
+				if err != nil {
+					return err
+				}
+				ret.TTS = ttsDeck
+				return nil
+			})
+			g.Go(func() error {
+				internDeck, err := mtgfail.BuildDeck(ctx, cache, deckList, log)
+				if err != nil {
+					return err
+				}
+				ret.Intern = internDeck
+				return nil
+			})
+			if err := g.Wait(); err != nil {
+				log.Error(
+					"Cannot build decks",
+					"err", err,
+				)
+				return
+			}
+			b, err := json.Marshal(ret)
+			if err != nil {
+
+				log.Error(
+					"Can't marshal deckfile",
+					"err", err,
+				)
+				return
+
+			}
+
+			w.Header().Add("Content-Type", "application/json")
+
+			_, err = fmt.Fprintf(w, "%s", b)
+			if err != nil {
+				log.Error(
+					"Can't write dual deckfile",
+					"err", err,
+				)
+				return
+
+			}
+
 		}
 
 		if err != nil {
@@ -369,6 +425,12 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 		}
 	}
 }
+
+type DualDeck struct {
+	TTS    *tabletopsimulator.Deckfile `json:"tts"`
+	Intern *mtgfail.Deck               `json:"internal"`
+}
+
 func keySet(m map[string]int) []string {
 	var s []string
 	for k := range m {
