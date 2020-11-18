@@ -380,7 +380,7 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 
 			w.Header().Add("Content-Type", "application/json")
 
-			_, err = fmt.Fprintf(w, "%s", b)
+			_, err = w.Write(b)
 			if err != nil {
 				log.Error(
 					"Can't write dual deckfile",
