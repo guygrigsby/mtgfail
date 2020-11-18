@@ -13,9 +13,11 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+// ExampleDeck ...
 const ExampleDeck = "examples/deck.txt"
 
-func ReadBulk(file string, log log15.Logger) (Bulk, error) {
+// ReadBulk ...
+func ReadBulk(file string, log log15.Logger) (CardStore, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		log.Error(
@@ -43,7 +45,7 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 		)
 		return nil, err
 	}
-	var bulk = make(map[string]*Entry)
+	var bulk = store(make(map[string]*Entry))
 	for i, card := range cards {
 		if card == nil {
 			log.Warn(
@@ -64,6 +66,22 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	return bulk, nil
 }
 
+type store map[string]*Entry
+
+func (s store) Warm(_ []string) {
+}
+func (s store) Count() int {
+	return len(s)
+}
+func (s store) Get(name string) *Entry {
+	return s[name]
+}
+func (s store) Put(name string, e *Entry) error {
+	s[name] = e
+	return nil
+}
+
+// ConvertToPairText ...
 func ConvertToPairText(deck *Deck) (map[string]int, error) {
 	cards := make(map[string]int)
 	if len(deck.Cards) == 0 {
@@ -77,7 +95,7 @@ func ConvertToPairText(deck *Deck) (map[string]int, error) {
 	return cards, nil
 }
 
-// ReadCardList
+// ReadCardList ...
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
 	cards := make(map[string]int)

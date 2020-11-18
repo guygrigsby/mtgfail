@@ -16,11 +16,11 @@ import (
 )
 
 // BuildDeck ...
-func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
+func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
 	deck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
-		entry := bulk[name]
+		entry := bulk.Get(name)
 		if entry == nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
@@ -81,9 +81,9 @@ func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, 
 			}
 			correctName := autoComplete.Data[0]
 
-			entry = bulk[correctName]
+			entry = bulk.Get(correctName)
 			// set it in the local data
-			bulk[name] = entry
+			bulk.Put(name, entry)
 			log.Info(
 				"Scryfall autocomplete success",
 				"original", name,

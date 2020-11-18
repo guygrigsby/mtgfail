@@ -30,15 +30,14 @@ type CardShort struct {
 }
 
 // BuildDeck ...
-func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log15.Logger) (*Deck, error) {
+func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log log15.Logger) (*Deck, error) {
 	var (
 		deck = Deck{
 			Cards: nil,
 		}
 	)
-
 	for name, count := range deckList {
-		entry := bulk[name]
+		entry := bulk.Get(name)
 		if entry == nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
@@ -100,8 +99,8 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 			}
 
 			correctName := autoComplete.Data[0]
-			entry = bulk[correctName]
-			bulk[name] = entry
+			entry = bulk.Get(correctName)
+			bulk.Put(name, entry)
 			log.Debug(
 				"Scryfall autocomplete success",
 				"original", name,
