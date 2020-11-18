@@ -426,8 +426,8 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 }
 
 type DualDeck struct {
-	TTS    *tts.DeckFile `json:"tts"`
-	Intern *mtgfail.Deck `json:"internal"`
+	TTS    *tts.DeckFile `json:"tts,omitempty"`
+	Intern *mtgfail.Deck `json:"internal,omitempty"`
 }
 
 func keySet(m map[string]int) []string {
