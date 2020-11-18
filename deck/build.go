@@ -17,7 +17,6 @@ import (
 	"github.com/inconshreveable/log15"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/guygrigsby/mtgfail/pkg/tabletopsimulator"
 	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 )
 
