@@ -96,7 +96,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 
 	}
 
-	return buildStacks(log, deck), nil
+	return BuildStacks(log, deck), nil
 
 }
 
@@ -106,7 +106,7 @@ type AutoComplete struct {
 	Data        []string `json:"data"`
 }
 
-func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
+func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 
 	var (
 		state []ObjectState
