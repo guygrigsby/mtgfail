@@ -40,7 +40,6 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 
 			for tt = z.Next(); tt != html.ErrorToken; tt = z.Next() {
 				t := z.Token()
-				log.Info("token", "data", t.Data)
 
 				if tt == html.EndTagToken && t.Data == "body" ||
 					tt == html.StartTagToken && t.Data == "p" {
@@ -61,7 +60,6 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 					log.Debug("html end token", "data", t.Data)
 					continue
 				} else {
-					log.Info("writing token", "data", t.Data)
 					_, err := w.WriteString(t.Data)
 					if err != nil {
 						log.Error(
