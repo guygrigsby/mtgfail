@@ -110,10 +110,6 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 		lineScanner.Split(bufio.ScanWords)
 		ok := lineScanner.Scan()
 		if !ok {
-			log.Info(
-				"Cannot scan count from start of line",
-				"line", line,
-			)
 			continue
 		}
 		str := lineScanner.Text()
