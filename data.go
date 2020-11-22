@@ -3,9 +3,7 @@ package mtgfail
 // CardStore ...
 type CardStore interface {
 	Get(string) *Entry
-	Warm([]string)
 	Put(string, *Entry) error
-	Count() int
 }
 
 // Deck ...
