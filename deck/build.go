@@ -333,7 +333,6 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 			return
 
 		}
-		go cache.Warm(keySet(deckList))
 		var deck interface{}
 
 		switch f {
