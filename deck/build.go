@@ -169,8 +169,8 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 			"req", fmt.Sprintf("%+v", req),
 		)
 
-		if req.Header.Get(http.CanonicalHeaderKey("Expect")) == "100-continue" {
-			l, err := strconv.Atoi(req.Header.Get(http.CanonicalHeaderKey("Content-Length")))
+		if req.Header.Get("Expect") == "100-continue" {
+			l, err := strconv.Atoi(req.Header.Get("Content-Length"))
 			if err != nil {
 				log.Error(
 					"cannot parse content length for 100-continue",
@@ -262,7 +262,7 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 
 			}
 			req.Body.Close()
-			var deck mtgfail.Deck
+			var deck []*mtgfail.Entry
 			err = json.Unmarshal(b, &deck)
 			if err != nil {
 				msg := "cannot unmarshal JSON deck"
@@ -279,7 +279,7 @@ func BuildDeck(f Format, cache mtgfail.CardStore, log log15.Logger) http.Handler
 				"marshalled", fmt.Sprintf("%+v", deck),
 			)
 
-			deckList, err = mtgfail.ConvertToPairText(&deck)
+			deckList, err = mtgfail.ConvertEntriesToPairText(deck)
 			if err != nil {
 				msg := "empty deck"
 				log.Error(

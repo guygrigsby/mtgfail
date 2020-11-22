@@ -95,6 +95,19 @@ func ConvertToPairText(deck *Deck) (map[string]int, error) {
 	return cards, nil
 }
 
+func ConvertEntriesToPairText(cards []*Entry) (map[string]int, error) {
+	pairs := make(map[string]int)
+	if len(cards) == 0 {
+		return nil, fmt.Errorf("Zero length deck %+v", cards)
+	}
+	for _, card := range cards {
+		count := pairs[card.Name]
+		count++
+		pairs[card.Name] = count
+	}
+	return pairs, nil
+}
+
 // ReadCardList ...
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
