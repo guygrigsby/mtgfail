@@ -37,12 +37,13 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 		}
 	)
 	for name, count := range deckList {
-		entry := bulk.Get(name)
-		if entry == nil {
+		entry, err := bulk.Get(name)
+		if entry == nil || err != nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
 				"name", name,
 				"count", count,
+				"err", err,
 			)
 			escName := url.QueryEscape(name)
 			uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
@@ -99,8 +100,22 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 			}
 
 			correctName := autoComplete.Data[0]
-			entry = bulk.Get(correctName)
-			bulk.Put(name, entry)
+			entry, err = bulk.Get(correctName)
+			if err != nil {
+				log.Error(
+					"cannot access store",
+					"err", err,
+				)
+				return nil, err
+			}
+			err = bulk.Put(name, entry)
+			if err != nil {
+				log.Error(
+					"cannot put store",
+					"err", err,
+				)
+				return nil, err
+			}
 			log.Debug(
 				"Scryfall autocomplete success",
 				"original", name,

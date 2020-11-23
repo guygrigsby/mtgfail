@@ -35,7 +35,6 @@ func main() {
 	}
 	log.Info(
 		"Read bulk",
-		"entries", bulk.Count(),
 	)
 
 	r := mux.NewRouter()
