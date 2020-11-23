@@ -2,7 +2,7 @@ package mtgfail
 
 // CardStore ...
 type CardStore interface {
-	Get(string) *Entry
+	Get(string) (*Entry, error)
 	GetMany([]string) ([]*Entry, error)
 	Put(string, *Entry) error
 }
