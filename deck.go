@@ -37,7 +37,7 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 		}
 	)
 	for name, count := range deckList {
-		entry, err := bulk.Get(name)
+		entry, err := bulk.Get(name, log)
 		if entry == nil || err != nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
@@ -100,7 +100,7 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 			}
 
 			correctName := autoComplete.Data[0]
-			entry, err = bulk.Get(correctName)
+			entry, err = bulk.Get(correctName, log)
 			if err != nil {
 				log.Error(
 					"cannot access store",
@@ -108,7 +108,7 @@ func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log
 				)
 				return nil, err
 			}
-			err = bulk.Put(name, entry)
+			err = bulk.Put(name, entry, log)
 			if err != nil {
 				log.Error(
 					"cannot put store",

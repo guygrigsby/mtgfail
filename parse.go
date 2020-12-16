@@ -68,7 +68,7 @@ func ReadBulk(file string, log log15.Logger) (CardStore, error) {
 
 type store map[string]*Entry
 
-func (s store) GetMany(names []string) ([]*Entry, error) {
+func (s store) GetMany(names []string, log log15.Logger) ([]*Entry, error) {
 	var matches []*Entry
 	for _, name := range names {
 		m, ok := s[name]
@@ -78,11 +78,17 @@ func (s store) GetMany(names []string) ([]*Entry, error) {
 	}
 	return matches, nil
 }
-func (s store) Get(name string) (*Entry, error) {
+func (s store) Get(name string, log log15.Logger) (*Entry, error) {
 	return s[name], nil
 }
-func (s store) Put(name string, e *Entry) error {
+func (s store) Put(name string, e *Entry, log log15.Logger) error {
 	s[name] = e
+	return nil
+}
+func (s store) PutMany(entries map[string]*Entry, log log15.Logger) error {
+	for k, v := range entries {
+		s[k] = v
+	}
 	return nil
 }
 
