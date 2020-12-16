@@ -3,6 +3,7 @@ package tabletopsimulator
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -111,7 +112,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 
 	}
 
-	return BuildStacks(log, deck), nil
+	return BuildStacks(log, deck)
 
 }
 
@@ -121,7 +122,7 @@ type AutoComplete struct {
 	Data        []string `json:"data"`
 }
 
-func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
+func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile, error) {
 
 	var (
 		state []ObjectState
@@ -144,8 +145,15 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			dObs         []ContainedObject
 		)
 		var cardCount int
-		for entry, count := range stack {
-			cardCount += count
+		for entry, v := range stack {
+			if v == 0 {
+				log.Error(
+					"zero count card",
+					"cardname", entry.Name,
+				)
+				return nil, fmt.Errorf("card with zero occurances found: %s", entry.Name)
+			}
+			cardCount += v
 			if entry == nil {
 
 				log.Warn(
@@ -154,7 +162,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 				continue
 			}
 			// Card multiples
-			for ; count > 0; count-- {
+			for count := v; count > 0; count-- {
 
 				cardTx := Transform{
 					PosX:   0,
@@ -179,6 +187,16 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 				obs = append(obs, ob)
 				var img string
 				// Double sider
+				log.Info("building card for TTS deck", entry)
+				if len(entry.CardFaces) == 1 {
+					msg := fmt.Sprintf("Invalid schema for card: %s. If 'CardFaces' exists, it must have 2 entries", entry.Name)
+
+					log.Error(
+						msg,
+						"cardsfaces", fmt.Sprintf("%+v", entry.CardFaces),
+					)
+					return nil, errors.New(msg)
+				}
 				if len(entry.CardFaces) > 1 {
 					/*
 											      "Name": "Card",
@@ -216,7 +234,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 						NumWidth:     1,
 						BackIsHidden: true,
 					}
-					log.Debug(
+					log.Info(
 						"Double sided card",
 						"name", entry.Name,
 						"face1", strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
@@ -242,7 +260,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 
 				card := Card{
 					FaceURL:      img,
-					BackURL:      "https://www.frogtown.me/images/gatherer/CardBack.jpg",
+					BackURL:      "https://firebasestorage.googleapis.com/v0/b/marketplace-c87d0.appspot.com/o/card_back.jpg?alt=media",
 					NumHeight:    1,
 					NumWidth:     1,
 					BackIsHidden: true,
@@ -296,7 +314,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 	}
 	return &DeckFile{
 		ObjectStates: state,
-	}
+	}, nil
 }
 
 type DeckFile struct {
