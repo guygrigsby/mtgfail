@@ -1,10 +1,13 @@
 package mtgfail
 
+import "github.com/inconshreveable/log15"
+
 // CardStore ...
 type CardStore interface {
-	Get(string) (*Entry, error)
-	GetMany([]string) ([]*Entry, error)
-	Put(string, *Entry) error
+	Get(string, log15.Logger) (*Entry, error)
+	GetMany([]string, log15.Logger) ([]*Entry, error)
+	Put(string, *Entry, log15.Logger) error
+	PutMany(map[string]*Entry, log15.Logger) error
 }
 
 // Deck ...
