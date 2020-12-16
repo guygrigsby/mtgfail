@@ -154,6 +154,16 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
 		}
 		name := strings.TrimSpace(sb.String())
+		if count == 0 {
+			// We'll assume 1 and fix this, but there is probably a root cause that we are missing.
+			// And we can't be the source of truth, for now.
+			count = 1
+			log.Warn(
+				"Found zero count card, changing to 1",
+				"cardname", name,
+			)
+
+		}
 		cards[name] = count
 
 	}
