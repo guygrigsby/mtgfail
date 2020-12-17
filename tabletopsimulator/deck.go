@@ -25,7 +25,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 		entry, err := bulk.Get(name, log)
 		if err != nil {
 			log.Error(
-				"failed to conact store to get card",
+				"failed to contact store to get card",
 				"err", err,
 			)
 			return nil, err
@@ -70,12 +70,20 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 }
 
 func isDoubleSided(entry *mtgfail.Entry) bool {
-	return strings.Contains(entry.Name, "//")
+	if len(entry.CardFaces) == 0 {
+		return false
+	}
+	for _, face := range entry.CardFaces {
+		if face.ImageUris.Normal != "" {
+			return true
+		}
+	}
+	return false
 }
 
 func createTokenEntry(entry mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, error) {
-	front := strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
-	back := strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0]
+	front := strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
+	back := strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0]
 	var token mtgfail.Entry
 	err := deepcopy.Copy(token, entry)
 	if err != nil {
@@ -243,9 +251,9 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 				var img string
 
 				if isDoubleSided(entry) {
-					img = entry.CardFaces[0].ImageUris.Large
+					img = entry.CardFaces[0].ImageUris.Png
 				} else {
-					img = entry.ImageUris.Large
+					img = entry.ImageUris.Png
 				}
 
 				card := Card{
