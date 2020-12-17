@@ -3,7 +3,6 @@ package tabletopsimulator
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"time"
 
 	"github.com/avast/retry-go"
+	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
@@ -19,100 +19,159 @@ import (
 // BuildDeck ...
 func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
 	deck := make(map[*mtgfail.Entry]int)
+	tokenDeck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
 		entry, err := bulk.Get(name, log)
-		if entry == nil || err != nil {
+		if err != nil {
+			log.Error(
+				"failed to conact store to get card",
+				"err", err,
+			)
+			return nil, err
+		}
+		if entry == nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
 				"name", name,
 				"count", count,
 				"err", err,
 			)
-			escName := url.QueryEscape(name)
-			uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
 
-			var res *http.Response
-			err := retry.Do(
-				func() error {
-					var err error
-					c := http.Client{Timeout: 5 * time.Second}
-					res, err = c.Get(uri)
-					if err != nil {
-						return err
-					}
-
-					return nil
-				})
+			entry, err = findAlternateNamedCards(name, bulk, log)
 			if err != nil {
+				msg := "failed to contact scryfall and get corrected card"
 				log.Error(
-					"cannot send request to scryfall",
-					"err", err,
-					"uri", uri,
-				)
-				continue
-			}
-			if res.StatusCode != 200 {
-				log.Error(
-					"Unexpected response status",
-					"status", res.Status,
-				)
-
-				continue
-
-			}
-
-			b, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				log.Error(
-					"cannot read scryfall response body",
-					"err", err,
-					"uri", uri,
-				)
-				continue
-			}
-			var autoComplete AutoComplete
-
-			err = json.Unmarshal(b, &autoComplete)
-			if err != nil {
-				log.Error(
-					"Cannot unmarshal scryfal res",
-					"err", err,
-				)
-				continue
-			}
-			correctName := autoComplete.Data[0]
-
-			entry, err = bulk.Get(correctName, log)
-			if err != nil {
-				log.Error(
-					"cannot access store",
+					msg,
 					"err", err,
 				)
 				return nil, err
 			}
-			// set it in the local data
-			err = bulk.Put(name, entry, log)
+
+		}
+		if isDoubleSided(entry) {
+			token, err := createTokenEntry(*entry, log)
 			if err != nil {
-				log.Error(
-					"cannot put store",
-					"err", err,
-				)
 				return nil, err
 			}
-			log.Info(
-				"Scryfall autocomplete success",
-				"original", name,
-				"corrected", correctName,
-			)
+			tokenDeck[entry] = count
+			entry = token
 
 		}
 
 		deck[entry] = count
 
 	}
-
+	if len(tokenDeck) > 0 {
+		return BuildStacks(log, deck, tokenDeck)
+	}
 	return BuildStacks(log, deck)
+
+}
+
+func isDoubleSided(entry *mtgfail.Entry) bool {
+	return strings.Contains(entry.Name, "//")
+}
+
+func createTokenEntry(entry mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, error) {
+	front := strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
+	back := strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0]
+	var token mtgfail.Entry
+	err := deepcopy.Copy(token, entry)
+	if err != nil {
+		log.Error(
+			"Could not create copy of double sided card",
+			"cardname", entry.Name,
+			"err", err,
+		)
+		return nil, err
+	}
+
+	log.Info(
+		"Double sided card",
+		"name", entry.Name,
+		"front", front,
+		"back", back,
+		"token", token,
+	)
+	return &token, nil
+}
+
+func findAlternateNamedCards(name string, bulk mtgfail.CardStore, log log15.Logger) (*mtgfail.Entry, error) {
+	escName := url.QueryEscape(name)
+	uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
+	var entry *mtgfail.Entry
+
+	var res *http.Response
+	err := retry.Do(
+		func() error {
+			var err error
+			c := http.Client{Timeout: 5 * time.Second}
+			res, err = c.Get(uri)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		})
+	if err != nil {
+		log.Error(
+			"cannot send request to scryfall",
+			"err", err,
+			"uri", uri,
+		)
+		return nil, err
+	}
+	if res.StatusCode != 200 {
+		log.Error(
+			"Unexpected response status",
+			"status", res.Status,
+		)
+
+		return nil, err
+
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Error(
+			"cannot read scryfall response body",
+			"err", err,
+			"uri", uri,
+		)
+		return nil, err
+	}
+	var autoComplete AutoComplete
+
+	err = json.Unmarshal(b, &autoComplete)
+	if err != nil {
+		log.Error(
+			"Cannot unmarshal scryfal res",
+			"err", err,
+		)
+		return nil, err
+	}
+	correctName := autoComplete.Data[0]
+
+	entry, err = bulk.Get(correctName, log)
+	if err != nil {
+		log.Error(
+			"cannot access store",
+			"err", err,
+		)
+		return nil, err
+	}
+
+	// set it in the local data
+	err = bulk.Put(name, entry, log)
+	if err != nil {
+		log.Error(
+			"cannot put correct card in store. Continuing without saving",
+			"err", err,
+		)
+		// we can continue
+	}
+	return entry, nil
 
 }
 
@@ -139,10 +198,6 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 			deck             = make(map[int]Card, len(stack))
 			ids              []int
 			containedObjects []ContainedObject
-
-			doubleSiders                = make(map[int]Card, len(stack))
-			doubleSidedIDs              []int
-			doubleSidedContainedObjects []ContainedObject
 		)
 		var cardCount int
 		for entry, v := range stack {
@@ -186,62 +241,9 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 				}
 				containedObjects = append(containedObjects, ob)
 				var img string
-				// Double sider
-				log.Info(
-					"building card for TTS deck",
-					"entry", entry,
-				)
-				if len(entry.CardFaces) == 1 {
-					msg := fmt.Sprintf("Invalid schema for card: %s. If 'CardFaces' exists, it must have 2 entries", entry.Name)
 
-					log.Error(
-						msg,
-						"cardsfaces", fmt.Sprintf("%+v", entry.CardFaces),
-					)
-					return nil, errors.New(msg)
-				}
-				if len(entry.CardFaces) > 1 {
-					front := strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
-					back := strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0]
-
-					token := Card{
-						FaceURL:      front,
-						BackURL:      back,
-						NumHeight:    1,
-						NumWidth:     1,
-						BackIsHidden: true,
-					}
-					log.Info(
-						"Double sided card",
-						"name", entry.Name,
-						"front", front,
-						"back", back,
-						"token", token,
-					)
-
-					cn := len(doubleSidedIDs) + 1
-					did := cn * 100
-					doubleSidedIDs = append(doubleSidedIDs, did)
-					dob := ContainedObject{
-						CardID:    did,
-						Name:      "Card",
-						Nickname:  entry.Name,
-						Transform: cardTx,
-					}
-
-					doubleSidedContainedObjects = append(doubleSidedContainedObjects, dob)
-					log.Info(
-						"Double sided contained object created",
-						"Contained Object", dob,
-						"all", doubleSidedContainedObjects,
-					)
-					doubleSiders[cn] = token
-					log.Info(
-						"Double sided added to map to process",
-						"token", token,
-						"all", doubleSiders,
-					)
-					img = entry.ImageUris.Large
+				if isDoubleSided(entry) {
+					img = entry.CardFaces[0].ImageUris.Large
 				} else {
 					img = entry.ImageUris.Large
 				}
@@ -291,21 +293,6 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 			DeckIDs:          ids,
 			Transform:        stackTx,
 		})
-		log.Info("processing double sided tokens", "double siders", doubleSiders)
-		for _, c := range doubleSidedContainedObjects {
-			log.Info(
-				"doubleSidedContainedObject processing",
-				"doubleSidedContainedObject", c,
-			)
-			stackTx.PosY = stackTx.PosY + 2
-			state = append(state, ObjectState{
-				Name:       "Card",
-				CustomDeck: doubleSiders,
-				Transform:  stackTx,
-				CardID:     c.CardID,
-				Nickname:   c.Nickname,
-			})
-		}
 
 		deckNumber++
 	}
