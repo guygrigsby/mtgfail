@@ -136,13 +136,13 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 			"unique cards", len(stack),
 		)
 		var (
-			deck = make(map[int]Card, len(stack))
-			ids  []int
-			obs  []ContainedObject
+			deck             = make(map[int]Card, len(stack))
+			ids              []int
+			containedObjects []ContainedObject
 
-			doubleSiders = make(map[int]Card, len(stack))
-			dIDs         []int
-			dObs         []ContainedObject
+			doubleSiders                = make(map[int]Card, len(stack))
+			doubleSidedIDs              []int
+			doubleSidedContainedObjects []ContainedObject
 		)
 		var cardCount int
 		for entry, v := range stack {
@@ -184,10 +184,13 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					Nickname:  entry.Name,
 					Transform: cardTx,
 				}
-				obs = append(obs, ob)
+				containedObjects = append(containedObjects, ob)
 				var img string
 				// Double sider
-				log.Info("building card for TTS deck", entry)
+				log.Info(
+					"building card for TTS deck",
+					"entry", entry,
+				)
 				if len(entry.CardFaces) == 1 {
 					msg := fmt.Sprintf("Invalid schema for card: %s. If 'CardFaces' exists, it must have 2 entries", entry.Name)
 
@@ -198,38 +201,12 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					return nil, errors.New(msg)
 				}
 				if len(entry.CardFaces) > 1 {
-					/*
-											      "Name": "Card",
-						      "CustomDeck": {
-						        "1": {
-						          "FaceURL": "https://www.frogtown.me/Images/V1/cc750c64-fd83-4b7b-9a40-a99213e6fa6d.jpg",
-						          "BackURL": "https://www.frogtown.me/Images/V1/8ce7af86-2a0b-426b-8f7b-a49d6c956141.jpg",
-						          "NumHeight": 1,
-						          "NumWidth": 1,
-						          "BackIsHidden": true
-						        }
-						      },
-						      "Transform": {
-						        "posX": 6.6000000000000005,
-						        "posY": 1,
-						        "posZ": 0,
-						        "rotX": 0,
-						        "rotY": 180,
-						        "rotZ": 0,
-						        "scaleX": 1,
-						        "scaleY": 1,
-						        "scaleZ": 1
-						      },
-						      "CardID": 100,
-						      "Nickname": "Jace, Vryn's Prodigy // Jace, Telepath Unbound"
-						    }
-						  ]
-						}
+					front := strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
+					back := strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0]
 
-					*/
 					token := Card{
-						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0],
-						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0],
+						FaceURL:      front,
+						BackURL:      back,
 						NumHeight:    1,
 						NumWidth:     1,
 						BackIsHidden: true,
@@ -237,13 +214,14 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					log.Info(
 						"Double sided card",
 						"name", entry.Name,
-						"face1", strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0],
-						"face2", strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0],
+						"front", front,
+						"back", back,
+						"token", token,
 					)
 
-					cn := len(dIDs) + 1
+					cn := len(doubleSidedIDs) + 1
 					did := cn * 100
-					dIDs = append(dIDs, did)
+					doubleSidedIDs = append(doubleSidedIDs, did)
 					dob := ContainedObject{
 						CardID:    did,
 						Name:      "Card",
@@ -251,9 +229,19 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 						Transform: cardTx,
 					}
 
-					dObs = append(dObs, dob)
+					doubleSidedContainedObjects = append(doubleSidedContainedObjects, dob)
+					log.Info(
+						"Double sided contained object created",
+						"Contained Object", dob,
+						"all", doubleSidedContainedObjects,
+					)
 					doubleSiders[cn] = token
-					img = strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
+					log.Info(
+						"Double sided added to map to process",
+						"token", token,
+						"all", doubleSiders,
+					)
+					img = entry.ImageUris.Large
 				} else {
 					img = entry.ImageUris.Large
 				}
@@ -265,6 +253,10 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					NumWidth:     1,
 					BackIsHidden: true,
 				}
+				log.Info(
+					"Card Created",
+					"card", card,
+				)
 
 				deck[cardNumber] = card
 
@@ -294,12 +286,17 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 
 		state = append(state, ObjectState{
 			Name:             "DeckCustom",
-			ContainedObjects: obs,
+			ContainedObjects: containedObjects,
 			CustomDeck:       deck,
 			DeckIDs:          ids,
 			Transform:        stackTx,
 		})
-		for _, c := range dObs {
+		log.Info("processing double sided tokens", "double siders", doubleSiders)
+		for _, c := range doubleSidedContainedObjects {
+			log.Info(
+				"doubleSidedContainedObject processing",
+				"doubleSidedContainedObject", c,
+			)
 			stackTx.PosY = stackTx.PosY + 2
 			state = append(state, ObjectState{
 				Name:       "Card",
