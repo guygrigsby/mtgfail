@@ -228,8 +228,8 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 
 					*/
 					token := Card{
-						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
-						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
+						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0],
+						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0],
 						NumHeight:    1,
 						NumWidth:     1,
 						BackIsHidden: true,
@@ -237,8 +237,8 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					log.Info(
 						"Double sided card",
 						"name", entry.Name,
-						"face1", strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
-						"face2", strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
+						"face1", strings.Split(entry.CardFaces[0].ImageUris.Lare, "?")[0],
+						"face2", strings.Split(entry.CardFaces[1].ImageUris.Large, "?")[0],
 					)
 
 					cn := len(dIDs) + 1

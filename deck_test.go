@@ -1,4 +1,4 @@
-package mtgfail_test
+package mtgfail
 
 import (
 	"context"
