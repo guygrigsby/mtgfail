@@ -147,11 +147,11 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 		var cardCount int
 		for entry, v := range stack {
 			if v == 0 {
-				log.Error(
-					"zero count card",
+				log.Warn(
+					"Encountered card with 0 occurrences in deck count card. Assuming 1.",
 					"cardname", entry.Name,
 				)
-				return nil, fmt.Errorf("card with zero occurances found: %s", entry.Name)
+				v = 1
 			}
 			cardCount += v
 			if entry == nil {
