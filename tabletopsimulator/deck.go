@@ -50,7 +50,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 
 		}
 		if isDoubleSided(entry) {
-			token, err := createTokenEntry(*entry, log)
+			token, err := CreateTokenEntry(*entry, log)
 			if err != nil {
 				return nil, err
 			}
@@ -81,7 +81,7 @@ func isDoubleSided(entry *mtgfail.Entry) bool {
 	return false
 }
 
-func createTokenEntry(entry mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, error) {
+func CreateTokenEntry(entry mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, error) {
 	front := strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
 	back := strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0]
 	var token mtgfail.Entry
