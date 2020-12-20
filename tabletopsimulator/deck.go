@@ -85,7 +85,7 @@ func CreateTokenEntry(entry *mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, e
 	front := strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
 	back := strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0]
 	var token mtgfail.Entry
-	err := deepcopy.Copy(token, entry)
+	err := deepcopy.Copy(&token, entry)
 	if err != nil {
 		log.Error(
 			"Could not create copy of double sided card",
@@ -242,10 +242,11 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 				id := (cardNumber) * 100
 				ids = append(ids, id)
 				ob := ContainedObject{
-					CardID:    id,
-					Name:      "Card",
-					Nickname:  entry.Name,
-					Transform: cardTx,
+					CardID:      id,
+					Name:        "Card",
+					Nickname:    entry.Name,
+					Description: entry.OracleText,
+					Transform:   cardTx,
 				}
 				containedObjects = append(containedObjects, ob)
 				var img string
@@ -333,10 +334,11 @@ type Transform struct {
 }
 
 type ContainedObject struct {
-	CardID    int       `json:"CardID"`
-	Name      string    `json:"Name"`
-	Nickname  string    `json:"Nickname"`
-	Transform Transform `json:"Transform"`
+	CardID      int       `json:"CardID"`
+	Name        string    `json:"Name"`
+	Nickname    string    `json:"Nickname"`
+	Transform   Transform `json:"Transform"`
+	Description string    `json:"Description,omitempty"`
 }
 
 type ObjectState struct {
