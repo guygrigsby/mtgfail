@@ -249,17 +249,22 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					Transform:   cardTx,
 				}
 				containedObjects = append(containedObjects, ob)
-				var img string
+				var (
+					front string
+					back  string
+				)
 
 				if isDoubleSided(entry) {
-					img = entry.CardFaces[0].ImageUris.Png
+					front = entry.CardFaces[0].ImageUris.Png
+					back = entry.CardFaces[1].ImageUris.Png
 				} else {
-					img = entry.ImageUris.Png
+					front = entry.ImageUris.Png
+					back = "https://firebasestorage.googleapis.com/v0/b/marketplace-c87d0.appspot.com/o/card_back.jpg?alt=media"
 				}
 
 				card := Card{
-					FaceURL:      img,
-					BackURL:      "https://firebasestorage.googleapis.com/v0/b/marketplace-c87d0.appspot.com/o/card_back.jpg?alt=media",
+					FaceURL:      front,
+					BackURL:      back,
 					NumHeight:    1,
 					NumWidth:     1,
 					BackIsHidden: true,
