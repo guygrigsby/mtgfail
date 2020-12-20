@@ -1,6 +1,8 @@
 package mtgfail
 
-import "github.com/inconshreveable/log15"
+import (
+	"github.com/inconshreveable/log15"
+)
 
 // CardStore ...
 type CardStore interface {
