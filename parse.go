@@ -139,17 +139,19 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 		str := lineScanner.Text()
 		count, err := strconv.Atoi(str)
 		if err != nil {
-			log.Error(
-				"Invalid file format. Cannot parse card count.",
-				"err", err,
-				"val", str,
-			)
-			return nil, err
+			// Assume one if there is no number
+			count = 1
 		}
 		sb := strings.Builder{}
+		txt := lineScanner.Text()
+		// Toss any X between count and card name
+		if strings.ToUpper(txt) != "X" {
+			sb.WriteString(txt)
+			sb.WriteString(" ")
+		}
 		for lineScanner.Scan() {
 			txt := lineScanner.Text()
-			sb.WriteString(txt)
+			sb.WriteString(strings.ToLower(txt))
 			sb.WriteString(" ")
 
 		}

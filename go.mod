@@ -1,6 +1,6 @@
 module github.com/guygrigsby/mtgfail
 
-go 1.13
+go 1.15
 
 require (
 	github.com/avast/retry-go v2.6.0+incompatible
