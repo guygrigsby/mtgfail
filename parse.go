@@ -140,17 +140,24 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 		count, err := strconv.Atoi(str)
 		if err != nil {
 			// Assume one if there is no number
+			log.Debug(
+				"Error converting count",
+				"count", count,
+				"str", str,
+			)
 			count = 1
 		}
 		sb := strings.Builder{}
-		txt := lineScanner.Text()
-		// Toss any X between count and card name
-		if strings.ToUpper(txt) != "X" {
-			sb.WriteString(txt)
-			sb.WriteString(" ")
-		}
+
 		for lineScanner.Scan() {
 			txt := lineScanner.Text()
+			if txt == "X" || txt == "x" {
+				log.Debug(
+					"throwing away x",
+					"text", txt,
+				)
+				continue
+			}
 			sb.WriteString(strings.ToLower(txt))
 			sb.WriteString(" ")
 
@@ -166,6 +173,11 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 			)
 
 		}
+		log.Debug(
+			"adding",
+			"name", name,
+			"count", count,
+		)
 		cards[name] = count
 
 	}

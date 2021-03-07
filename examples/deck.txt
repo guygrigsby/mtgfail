@@ -1,5 +1,5 @@
-1 Bloodstained Mire
-1 Command Tower
+1 bloodstained Mire
+1 x Command Tower
 1 Fabled Passage
 1 Flooded Strand
 1 Great Furnace
