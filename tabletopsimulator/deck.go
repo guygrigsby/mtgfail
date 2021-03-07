@@ -22,7 +22,7 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 	tokenDeck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
-		entry, err := bulk.Get(name, log)
+		entry, err := bulk.Get(mtgfail.Key(name), log)
 		if err != nil {
 			log.Error(
 				"failed to contact store to get card",
