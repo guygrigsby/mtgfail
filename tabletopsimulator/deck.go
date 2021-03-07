@@ -69,6 +69,31 @@ func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]
 
 }
 
+var nonCaps = map[string]string{
+	"the": "the",
+	"of":  "of",
+	"a":   "a",
+	"by":  "by",
+	"in":  "in",
+	"for": "for",
+}
+
+func Capitalize(name string, log log15.Logger) string {
+	words := strings.Split(name, " ")
+	newWords := make([]string, len(words))
+
+	for _, word := range words {
+
+		if _, lower := nonCaps[word]; !lower {
+			cap := strings.ToUpper(string(word[0]))
+			newWords = append(newWords, fmt.Sprintf("%s%s", cap, word[1:]))
+		} else {
+			newWords = append(newWords, word)
+		}
+	}
+	return strings.TrimSpace(strings.Join(newWords, " "))
+}
+
 func isDoubleSided(entry *mtgfail.Entry) bool {
 	if len(entry.CardFaces) == 0 {
 		return false
@@ -244,7 +269,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 				ob := ContainedObject{
 					CardID:      id,
 					Name:        "Card",
-					Nickname:    entry.Name,
+					Nickname:    Capitalize(entry.Name, log),
 					Description: entry.OracleText,
 					Transform:   cardTx,
 				}
