@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/avast/retry-go"
@@ -140,20 +139,7 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error, int) {
 
 		return nil, fmt.Errorf("Unknown Host"), http.StatusUnprocessableEntity
 	}
-	b, err := ioutil.ReadAll(content)
-	if err != nil {
-		log.Error(
-			"Unable to read fetched content",
-			"err", err,
-			"url", deckURI,
-		)
-		return nil, err, http.StatusBadGateway
-	}
-	defer content.Close()
-	nc := ioutil.NopCloser(
-		strings.NewReader(
-			strings.ToLower(string(b))))
-	return nc, nil, 200
+	return content, nil, 200
 }
 
 // BuildTTSDeck ...

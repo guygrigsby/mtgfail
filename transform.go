@@ -73,7 +73,7 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 			}
 		}
 	}
-	n := strings.ToLower(w.String())
+	n := w.String()
 	log.Debug(
 		"normalized",
 		"content", n,

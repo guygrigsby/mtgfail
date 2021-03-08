@@ -9,6 +9,7 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+// Decode ...
 func Decode(ttsFormat io.Reader, log log15.Logger) ([]*mtgfail.Entry, error) {
 	b, err := ioutil.ReadAll(ttsFormat)
 	if err != nil {
@@ -19,7 +20,7 @@ func Decode(ttsFormat io.Reader, log log15.Logger) ([]*mtgfail.Entry, error) {
 		)
 		return nil, err
 	}
-	var deckfile []ObjectState
+	var deckfile DeckFile
 	err = json.Unmarshal(b, &deckfile)
 	if err != nil {
 		log.Error(
@@ -31,14 +32,17 @@ func Decode(ttsFormat io.Reader, log log15.Logger) ([]*mtgfail.Entry, error) {
 
 	var deck []*mtgfail.Entry
 
-	for i, entry := range deckfile {
+	for _, entry := range deckfile.ObjectStates {
 
-		deck = append(deck, &mtgfail.Entry{
-			Name: entry.Nickname,
-			ImageUris: mtgfail.ImageUris{
-				Normal: entry.CustomDeck[i+1].FaceURL,
-			},
-		})
+		for i, obj := range entry.ContainedObjects {
+			deck = append(deck, &mtgfail.Entry{
+				Name: obj.Nickname,
+				ImageUris: mtgfail.ImageUris{
+					Normal: entry.CustomDeck[i+1].FaceURL,
+				},
+			})
+		}
+
 	}
 
 	return deck, nil

@@ -158,7 +158,7 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 				)
 				continue
 			}
-			sb.WriteString(strings.ToLower(txt))
+			sb.WriteString(txt)
 			sb.WriteString(" ")
 
 		}
