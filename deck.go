@@ -7,8 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"regexp"
-	"strings"
 	"time"
 
 	"github.com/avast/retry-go"
@@ -32,14 +30,14 @@ type CardShort struct {
 }
 
 func NormalizeCardName(name string) string {
-	if strings.Contains(name, "//") {
-		name = strings.ReplaceAll(name, "//", "")
-		re := regexp.MustCompile(`//.*`)
-		// Strip everything after the double slash
-		// Scrycall has the // and that's where we get our card data
-		return string(re.ReplaceAll([]byte(name), []byte{}))
+	//if strings.Contains(name, "//") {
+	//	name = strings.ReplaceAll(name, "//", "")
+	//	re := regexp.MustCompile(`//.*`)
+	//	// Strip everything after the double slash
+	//	// Scrycall has the // and that's where we get our card data
+	//	return string(re.ReplaceAll([]byte(name), []byte{}))
 
-	}
+	//}
 	return name
 }
 
