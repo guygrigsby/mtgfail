@@ -7,7 +7,7 @@ import (
 // CardStore ...
 type CardStore interface {
 	Get(string, log15.Logger) (*Entry, error)
-	GetMany([]string, log15.Logger) ([]*Entry, error)
+	GetMany([]string, log15.Logger) ([]*Entry, []error)
 	Put(string, *Entry, log15.Logger) error
 	PutMany(map[string]*Entry, log15.Logger) error
 }
