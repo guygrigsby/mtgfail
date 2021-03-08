@@ -68,7 +68,7 @@ func ReadBulk(file string, log log15.Logger) (CardStore, error) {
 
 type store map[string]*Entry
 
-func (s store) GetMany(names []string, log log15.Logger) ([]*Entry, error) {
+func (s store) GetMany(names []string, log log15.Logger) ([]*Entry, []error) {
 	var matches []*Entry
 	for _, name := range names {
 		m, ok := s[name]
