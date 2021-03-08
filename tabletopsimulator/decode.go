@@ -39,6 +39,9 @@ func Decode(ttsFormat io.Reader, log log15.Logger) ([]*mtgfail.Entry, error) {
 				Name: obj.Nickname,
 				ImageUris: mtgfail.ImageUris{
 					Normal: entry.CustomDeck[i+1].FaceURL,
+					Small:  entry.CustomDeck[i+1].FaceURL,
+					Large:  entry.CustomDeck[i+1].FaceURL,
+					Png:    entry.CustomDeck[i+1].FaceURL,
 				},
 			})
 		}
