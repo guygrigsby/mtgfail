@@ -60,7 +60,7 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 					log.Debug("html end token", "data", t.Data)
 					continue
 				} else {
-					_, err := w.WriteString(strings.ToLower(t.Data))
+					_, err := w.WriteString(t.Data)
 					if err != nil {
 						log.Error(
 							"Cannot write data",
@@ -73,9 +73,10 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 			}
 		}
 	}
+	n := strings.ToLower(w.String())
 	log.Debug(
 		"normalized",
-		"content", w.String(),
+		"content", n,
 	)
-	return ioutil.NopCloser(strings.NewReader(w.String())), nil
+	return ioutil.NopCloser(strings.NewReader(n)), nil
 }
