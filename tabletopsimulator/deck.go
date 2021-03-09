@@ -266,25 +266,17 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 
 				id := (cardNumber) * 100
 				ids = append(ids, id)
-				ob := ContainedObject{
-					CardID:      id,
-					Name:        "Card",
-					Nickname:    Capitalize(entry.Name, log),
-					Description: entry.OracleText,
-					Transform:   cardTx,
-					Tooltip:     true,
-				}
-				containedObjects = append(containedObjects, ob)
+
 				var (
 					front string
 					back  string
 				)
 
 				if isDoubleSided(entry) {
-					front = entry.CardFaces[0].ImageUris.Png
-					back = entry.CardFaces[1].ImageUris.Png
+					front = entry.CardFaces[0].ImageUris.Normal
+					back = entry.CardFaces[1].ImageUris.Normal
 				} else {
-					front = entry.ImageUris.Png
+					front = entry.ImageUris.Normal
 					back = "https://firebasestorage.googleapis.com/v0/b/marketplace-c87d0.appspot.com/o/card_back.jpg?alt=media"
 				}
 
@@ -295,6 +287,19 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					NumWidth:     1,
 					BackIsHidden: true,
 				}
+				ob := ContainedObject{
+					CardID:      id,
+					Name:        "Card",
+					Nickname:    fmt.Sprintf("%s\n%s", entry.Name, entry.TypeLine),
+					Description: entry.OracleText,
+					Transform:   cardTx,
+					Tooltip:     true,
+					Sticky:      true,
+					CustomDeck: map[int]Card{
+						cardNumber: card,
+					},
+				}
+				containedObjects = append(containedObjects, ob)
 				log.Info(
 					"Card Created",
 					"card", card,
@@ -371,6 +376,7 @@ type ContainedObject struct {
 	Transform   Transform    `json:"Transform"`
 	Description string       `json:"Description,omitempty"`
 	Tooltip     bool         `json:"Tooltip"`
+	Sticky      bool         `json:"Sticky"`
 	CustomDeck  map[int]Card `json:"CustomDeck"`
 }
 
