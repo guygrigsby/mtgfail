@@ -370,7 +370,7 @@ type ContainedObject struct {
 	Nickname    string       `json:"Nickname"`
 	Transform   Transform    `json:"Transform"`
 	Description string       `json:"Description,omitempty"`
-	Tooltip     string       `json:"Tooltip"`
+	Tooltip     bool         `json:"Tooltip"`
 	CustomDeck  map[int]Card `json:"CustomDeck"`
 }
 
