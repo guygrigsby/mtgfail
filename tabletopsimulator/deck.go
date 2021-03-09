@@ -272,6 +272,7 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					Nickname:    Capitalize(entry.Name, log),
 					Description: entry.OracleText,
 					Transform:   cardTx,
+					Tooltip:     true,
 				}
 				containedObjects = append(containedObjects, ob)
 				var (
@@ -364,11 +365,13 @@ type Transform struct {
 }
 
 type ContainedObject struct {
-	CardID      int       `json:"CardID"`
-	Name        string    `json:"Name"`
-	Nickname    string    `json:"Nickname"`
-	Transform   Transform `json:"Transform"`
-	Description string    `json:"Description,omitempty"`
+	CardID      int          `json:"CardID"`
+	Name        string       `json:"Name"`
+	Nickname    string       `json:"Nickname"`
+	Transform   Transform    `json:"Transform"`
+	Description string       `json:"Description,omitempty"`
+	Tooltip     string       `json:"Tooltip"`
+	CustomDeck  map[int]Card `json:"CustomDeck"`
 }
 
 type ObjectState struct {

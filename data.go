@@ -37,7 +37,7 @@ type Entry struct {
 	ManaCost      string        `json:"mana_cost"`
 	Cmc           float64       `json:"cmc"`
 	TypeLine      string        `json:"type_line"`
-	OracleText    string        `json:"oracle_text"`
+	OracleText    string        `json:"OracleText"`
 	Power         string        `json:"power"`
 	Toughness     string        `json:"toughness"`
 	Colors        []string      `json:"colors"`
