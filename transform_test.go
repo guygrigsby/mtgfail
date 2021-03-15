@@ -10,6 +10,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestTappedOutTransform(t *testing.T) {
+	log := log15.New()
+
+	r, err := Normalize(ioutil.NopCloser(strings.NewReader(input)), log)
+	assert.NoError(t, err)
+
+	b, err := ioutil.ReadAll(r)
+	assert.NoError(t, err)
+
+	fmt.Printf("BYTES %s", b)
+
+}
 func TestDeckboxTransform(t *testing.T) {
 	log := log15.New()
 

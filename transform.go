@@ -26,9 +26,47 @@ import (
 </body>
 </html>
 */
+type DeckSite int
+
+const (
+	Scryfall DeckSite = iota
+	DeckBox
+	TappedOut
+)
 
 // Normalize ...
-func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
+func Normalize(source DeckSite, r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	var (
+		deck map[string]int
+		err  error
+	)
+	switch source {
+	case DeckBox:
+		deck, err = normalizeDeckbox(r, log)
+	case TappedOut:
+		deck, err = normalizeTappedOut(r, log)
+	case Scryfall:
+		deck, err = normalizeScryfall(r, log)
+	}
+	log.Debug(
+		"normalized",
+		"content", deck,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return deck, nil
+}
+
+func normalizeScryfall(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	return ReadCardList(r, log)
+}
+
+func normalizeTappedOut(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	return ReadCardList(r, log)
+
+}
+func normalizeDeckbox(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
 	z := html.NewTokenizer(r)
 
@@ -43,7 +81,7 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 
 				if tt == html.EndTagToken && t.Data == "body" ||
 					tt == html.StartTagToken && t.Data == "p" {
-					return ioutil.NopCloser(strings.NewReader(w.String())), nil
+					return ReadCardList(ioutil.NopCloser(strings.NewReader(w.String())), log)
 				}
 
 				if tt == html.SelfClosingTagToken && t.Data == "br" {
@@ -73,10 +111,6 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 			}
 		}
 	}
-	n := w.String()
-	log.Debug(
-		"normalized",
-		"content", n,
-	)
-	return ioutil.NopCloser(strings.NewReader(n)), nil
+	return ReadCardList(ioutil.NopCloser(strings.NewReader(w.String())), log)
+
 }
