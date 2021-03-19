@@ -129,6 +129,10 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()
+		log.Debug(
+			"scanned line",
+			"line", line,
+		)
 
 		if strings.HasPrefix(line, "//") {
 			// Skip comment line
