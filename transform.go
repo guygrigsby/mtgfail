@@ -42,10 +42,13 @@ func Normalize(source DeckSite, r io.ReadCloser, log log15.Logger) (map[string]i
 	)
 	switch source {
 	case DeckBox:
+		log.Debug("deckbox deck")
 		deck, err = normalizeDeckbox(r, log)
 	case TappedOut:
+		log.Debug("tappedout deck")
 		deck, err = normalizeTappedOut(r, log)
 	case Scryfall:
+		log.Debug("scryfall deck")
 		deck, err = normalizeScryfall(r, log)
 	}
 	log.Debug(
