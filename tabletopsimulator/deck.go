@@ -300,10 +300,6 @@ func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile,
 					},
 				}
 				containedObjects = append(containedObjects, ob)
-				log.Info(
-					"Card Created",
-					"card", card,
-				)
 
 				deck[cardNumber] = card
 
