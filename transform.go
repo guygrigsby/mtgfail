@@ -70,6 +70,7 @@ func normalizeTappedOut(r io.ReadCloser, log log15.Logger) (map[string]int, erro
 
 }
 func normalizeDeckbox(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	log.Debug("normalizing deckbox")
 
 	z := html.NewTokenizer(r)
 
@@ -83,7 +84,7 @@ func normalizeDeckbox(r io.ReadCloser, log log15.Logger) (map[string]int, error)
 				t := z.Token()
 
 				if tt == html.EndTagToken && t.Data == "body" ||
-					tt == html.StartTagToken && t.Data == "p" {
+					tt == html.StartTagToken && t.Data == "p" || t.Data == "Sideboard" { // Work on sideboard later
 					return ReadCardList(ioutil.NopCloser(strings.NewReader(w.String())), log)
 				}
 
