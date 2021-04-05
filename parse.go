@@ -129,10 +129,6 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()
-		log.Debug(
-			"scanned line",
-			"line", line,
-		)
 
 		if strings.HasPrefix(line, "//") {
 			// Skip comment line
@@ -149,7 +145,7 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 		count, err := strconv.Atoi(str)
 		if err != nil {
 			// Assume one if there is no number
-			log.Debug(
+			log.Warn(
 				"Error converting count",
 				"count", count,
 				"str", str,
@@ -182,11 +178,6 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 			)
 
 		}
-		log.Debug(
-			"adding",
-			"name", name,
-			"count", count,
-		)
 		cards[name] = count
 
 	}

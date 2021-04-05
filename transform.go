@@ -51,10 +51,6 @@ func Normalize(source DeckSite, r io.ReadCloser, log log15.Logger) (map[string]i
 		log.Debug("scryfall deck")
 		deck, err = normalizeScryfall(r, log)
 	}
-	log.Debug(
-		"normalized",
-		"content", deck,
-	)
 	if err != nil {
 		return nil, err
 	}
