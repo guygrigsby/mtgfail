@@ -1,0 +1,8 @@
+.image-box {
+  margin-right: 1em;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: visible;
+  overflow-x: scroll;
+}
