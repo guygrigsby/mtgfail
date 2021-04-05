@@ -32,6 +32,7 @@ const (
 	Scryfall DeckSite = iota
 	DeckBox
 	TappedOut
+	RawDeck
 )
 
 // Normalize ...
@@ -50,7 +51,12 @@ func Normalize(source DeckSite, r io.ReadCloser, log log15.Logger) (map[string]i
 	case Scryfall:
 		log.Debug("scryfall deck")
 		deck, err = normalizeScryfall(r, log)
+	case RawDeck:
+		log.Debug("raw deck")
+		deck, err = normalizeTappedOut(r, log)
+
 	}
+
 	if err != nil {
 		return nil, err
 	}
