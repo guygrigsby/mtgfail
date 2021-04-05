@@ -1,0 +1,98 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { cx, css } from 'pretty-lights'
+import PropTypes from 'prop-types'
+import { useAuth } from '../AuthProvider.js'
+
+const style = css`
+  display: flex;
+  background-color: #333;
+  justify-content: space-evenly;
+  overflow: hidden;
+`
+
+const link = css`
+  display: inline-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  vertical-align: middle;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  &:hover: {
+    background-color: #ddd;
+    color: black;
+  }
+`
+const gear = css`
+  font-size: 2em;
+`
+
+const Nav = () => {
+  const items = [
+    {
+      link: '/decks',
+      content: 'Deck Building',
+    },
+    {
+      link: '/selling',
+      content: 'Selling',
+      authRequired: true,
+    },
+    {
+      link: '/buying',
+      content: 'Buy',
+    },
+    {
+      link: '/login',
+      content: 'Login',
+      authRequired: true,
+    },
+    {
+      authRequired: true,
+      element: (
+        <button key='logout-link' className={link} onClick={() => auth.logout()}>
+          Logout
+        </button>
+      ),
+    },
+    {
+      link: '/settings',
+      authRequired: true,
+      element: (
+        <Link key='settings-link'className={cx(gear, link)} to="/settings}">
+          &#9881;
+        </Link>
+      ),
+    },
+  ]
+  const auth = useAuth()
+  return (
+    <nav className={style}>
+      {items
+        .filter(
+          (e) =>
+            (e.authRequired && auth.user) ||
+            !e.authRequired ||
+            (e.exclusiveNoAuth && !auth.user),
+        )
+        .map((e, idx) =>
+          e.element ? (
+            e.element
+          ) : (
+            <Link key={idx} to={e.link} className={link}>
+              {e.content}
+            </Link>
+          ),
+        )}
+      <span></span>
+      )}
+    </nav>
+  )
+}
+
+Nav.propTypes = {
+  items: PropTypes.array,
+}
+
+export default Nav
