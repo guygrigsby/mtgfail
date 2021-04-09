@@ -26,9 +26,53 @@ import (
 </body>
 </html>
 */
+type DeckSite int
+
+const (
+	Scryfall DeckSite = iota
+	DeckBox
+	TappedOut
+	RawDeck
+)
 
 // Normalize ...
-func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
+func Normalize(source DeckSite, r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	var (
+		deck map[string]int
+		err  error
+	)
+	switch source {
+	case DeckBox:
+		log.Info("deckbox deck")
+		deck, err = normalizeDeckbox(r, log)
+	case TappedOut:
+		log.Info("tappedout deck")
+		deck, err = normalizeTappedOut(r, log)
+	case Scryfall:
+		log.Debug("scryfall deck")
+		deck, err = normalizeScryfall(r, log)
+	case RawDeck:
+		log.Debug("raw deck")
+		deck, err = normalizeTappedOut(r, log)
+
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return deck, nil
+}
+
+func normalizeScryfall(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	return ReadCardList(r, log)
+}
+
+func normalizeTappedOut(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	return ReadCardList(r, log)
+
+}
+func normalizeDeckbox(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
+	log.Debug("normalizing deckbox")
 
 	z := html.NewTokenizer(r)
 
@@ -40,11 +84,10 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 
 			for tt = z.Next(); tt != html.ErrorToken; tt = z.Next() {
 				t := z.Token()
-				log.Info("token", "data", t.Data)
 
 				if tt == html.EndTagToken && t.Data == "body" ||
-					tt == html.StartTagToken && t.Data == "p" {
-					return ioutil.NopCloser(strings.NewReader(w.String())), nil
+					tt == html.StartTagToken && t.Data == "p" || t.Data == "Sideboard" { // Work on sideboard later
+					return ReadCardList(ioutil.NopCloser(strings.NewReader(w.String())), log)
 				}
 
 				if tt == html.SelfClosingTagToken && t.Data == "br" {
@@ -61,7 +104,6 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 					log.Debug("html end token", "data", t.Data)
 					continue
 				} else {
-					log.Info("writing token", "data", t.Data)
 					_, err := w.WriteString(t.Data)
 					if err != nil {
 						log.Error(
@@ -75,9 +117,6 @@ func Normalize(r io.ReadCloser, log log15.Logger) (io.ReadCloser, error) {
 			}
 		}
 	}
-	log.Debug(
-		"normalized",
-		"content", w.String(),
-	)
-	return ioutil.NopCloser(strings.NewReader(w.String())), nil
+	return ReadCardList(ioutil.NopCloser(strings.NewReader(w.String())), log)
+
 }

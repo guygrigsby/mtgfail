@@ -1,0 +1,2544 @@
+{
+  "ObjectStates": [
+    {
+      "Name": "DeckCustom",
+      "ContainedObjects": [
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Swamp",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 200,
+          "Name": "Card",
+          "Nickname": "Solemn Simulacrum",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 300,
+          "Name": "Card",
+          "Nickname": "Lightning Greaves",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 400,
+          "Name": "Card",
+          "Nickname": "Dismember",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 500,
+          "Name": "Card",
+          "Nickname": "Sol Ring",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 600,
+          "Name": "Card",
+          "Nickname": "Sunken Hollow",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 700,
+          "Name": "Card",
+          "Nickname": "Junk Diver",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 800,
+          "Name": "Card",
+          "Nickname": "Land Tax",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 900,
+          "Name": "Card",
+          "Nickname": "Glacial Fortress",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1000,
+          "Name": "Card",
+          "Nickname": "Watery Grave",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1100,
+          "Name": "Card",
+          "Nickname": "Godless Shrine",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1200,
+          "Name": "Card",
+          "Nickname": "Sharding Sphinx",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1300,
+          "Name": "Card",
+          "Nickname": "Sai, Master Thopterist",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1400,
+          "Name": "Card",
+          "Nickname": "Obelisk of Esper",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1500,
+          "Name": "Card",
+          "Nickname": "Swiftfoot Boots",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1600,
+          "Name": "Card",
+          "Nickname": "Faerie Miscreant",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1700,
+          "Name": "Card",
+          "Nickname": "Anticipate",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1800,
+          "Name": "Card",
+          "Nickname": "Warden of Evos Isle",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1900,
+          "Name": "Card",
+          "Nickname": "Exotic Orchard",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2000,
+          "Name": "Card",
+          "Nickname": "Prairie Stream",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2100,
+          "Name": "Card",
+          "Nickname": "Orzhov Signet",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2200,
+          "Name": "Card",
+          "Nickname": "Darksteel Forge",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2300,
+          "Name": "Card",
+          "Nickname": "Suture Priest",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2400,
+          "Name": "Card",
+          "Nickname": "Murder",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2500,
+          "Name": "Card",
+          "Nickname": "Wurmcoil Engine",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2600,
+          "Name": "Card",
+          "Nickname": "Myr Retriever",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2700,
+          "Name": "Card",
+          "Nickname": "Dictate of Erebos",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2800,
+          "Name": "Card",
+          "Nickname": "Mentor of the Meek",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 2900,
+          "Name": "Card",
+          "Nickname": "Phyrexian Totem",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3000,
+          "Name": "Card",
+          "Nickname": "Scrap Trawler",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3100,
+          "Name": "Card",
+          "Nickname": "Jhoira's Familiar",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3200,
+          "Name": "Card",
+          "Nickname": "Banishing Knack",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3300,
+          "Name": "Card",
+          "Nickname": "Mox Opal",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3400,
+          "Name": "Card",
+          "Nickname": "Grand Architect",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3500,
+          "Name": "Card",
+          "Nickname": "Myriad Landscape",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3600,
+          "Name": "Card",
+          "Nickname": "Sculpting Steel",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3700,
+          "Name": "Card",
+          "Nickname": "Aether Spellbomb",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3800,
+          "Name": "Card",
+          "Nickname": "Ugin, the Ineffable",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 3900,
+          "Name": "Card",
+          "Nickname": "Leadership Vacuum",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4000,
+          "Name": "Card",
+          "Nickname": "Retraction Helix",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4100,
+          "Name": "Card",
+          "Nickname": "Cabal Ritual",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4200,
+          "Name": "Card",
+          "Nickname": "Brainstorm",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4300,
+          "Name": "Card",
+          "Nickname": "Thopter Spy Network",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4400,
+          "Name": "Card",
+          "Nickname": "Shimmer Dragon",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4500,
+          "Name": "Card",
+          "Nickname": "Liliana Vess",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4600,
+          "Name": "Card",
+          "Nickname": "Morphic Pool",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4700,
+          "Name": "Card",
+          "Nickname": "Everflowing Chalice",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4800,
+          "Name": "Card",
+          "Nickname": "Counterspell",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 4900,
+          "Name": "Card",
+          "Nickname": "Command Tower",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5000,
+          "Name": "Card",
+          "Nickname": "Rhystic Study",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5100,
+          "Name": "Card",
+          "Nickname": "Pongify",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5200,
+          "Name": "Card",
+          "Nickname": "Alela, Artful Provocateur",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5300,
+          "Name": "Card",
+          "Nickname": "Bitterblossom",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5400,
+          "Name": "Card",
+          "Nickname": "Hanna, Ship's Navigator",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5500,
+          "Name": "Card",
+          "Nickname": "Island",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5600,
+          "Name": "Card",
+          "Nickname": "Shrine of Piercing Vision",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5700,
+          "Name": "Card",
+          "Nickname": "Tormod's Crypt",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5800,
+          "Name": "Card",
+          "Nickname": "Parasitic Strix",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 5900,
+          "Name": "Card",
+          "Nickname": "Oona, Queen of the Fae",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6000,
+          "Name": "Card",
+          "Nickname": "Efficient Construction",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6100,
+          "Name": "Card",
+          "Nickname": "Plains",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6100,
+          "Name": "Card",
+          "Nickname": "Plains",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6100,
+          "Name": "Card",
+          "Nickname": "Plains",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6100,
+          "Name": "Card",
+          "Nickname": "Plains",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6100,
+          "Name": "Card",
+          "Nickname": "Plains",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6200,
+          "Name": "Card",
+          "Nickname": "Arcanist's Owl",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6300,
+          "Name": "Card",
+          "Nickname": "Phyrexian Unlife",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6400,
+          "Name": "Card",
+          "Nickname": "Basalt Monolith",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6500,
+          "Name": "Card",
+          "Nickname": "Ancient Tomb",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6600,
+          "Name": "Card",
+          "Nickname": "Hallowed Fountain",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6700,
+          "Name": "Card",
+          "Nickname": "Emry, Lurker of the Loch",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6800,
+          "Name": "Card",
+          "Nickname": "Expedition Map",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 6900,
+          "Name": "Card",
+          "Nickname": "Phyrexian Arena",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7000,
+          "Name": "Card",
+          "Nickname": "Mandate of Peace",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7100,
+          "Name": "Card",
+          "Nickname": "Tezzeret, Master of Metal",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7200,
+          "Name": "Card",
+          "Nickname": "Ornithopter",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7300,
+          "Name": "Card",
+          "Nickname": "All That Glitters",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7400,
+          "Name": "Card",
+          "Nickname": "Idol of Oblivion",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7500,
+          "Name": "Card",
+          "Nickname": "Idyllic Tutor",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7600,
+          "Name": "Card",
+          "Nickname": "Notion Rain",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7700,
+          "Name": "Card",
+          "Nickname": "Dimir Signet",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7800,
+          "Name": "Card",
+          "Nickname": "Tidal Bore",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 7900,
+          "Name": "Card",
+          "Nickname": "Battered Golem",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 8000,
+          "Name": "Card",
+          "Nickname": "Grim Tutor",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        }
+      ],
+      "DeckIDs": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        1000,
+        1100,
+        1200,
+        1300,
+        1400,
+        1500,
+        1600,
+        1700,
+        1800,
+        1900,
+        2000,
+        2100,
+        2200,
+        2300,
+        2400,
+        2500,
+        2600,
+        2700,
+        2800,
+        2900,
+        3000,
+        3100,
+        3200,
+        3300,
+        3400,
+        3500,
+        3600,
+        3700,
+        3800,
+        3900,
+        4000,
+        4100,
+        4200,
+        4300,
+        4400,
+        4500,
+        4600,
+        4700,
+        4800,
+        4900,
+        5000,
+        5100,
+        5200,
+        5300,
+        5400,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5500,
+        5600,
+        5700,
+        5800,
+        5900,
+        6000,
+        6100,
+        6100,
+        6100,
+        6100,
+        6100,
+        6200,
+        6300,
+        6400,
+        6500,
+        6600,
+        6700,
+        6800,
+        6900,
+        7000,
+        7100,
+        7200,
+        7300,
+        7400,
+        7500,
+        7600,
+        7700,
+        7800,
+        7900,
+        8000
+      ],
+      "CustomDeck": {
+        "1": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/00030770-5e99-4943-819d-8d807c24cc14.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "2": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/00f9955f-a522-47bf-b064-92dd21a76b18.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "3": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/047de2fe-6fc1-40c5-98d4-6203b4a83445.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "4": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/064dfdeb-485f-473e-9fa0-8fdb7638cdc6.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "5": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/073bfdca-d7b8-4f4b-93f3-6e7c44bc0b0a.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "6": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/0dd1726f-b899-491a-8b0e-8e3d25f17d3d.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "7": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/119a814f-0325-4b69-a0b6-4c623b981f4a.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "8": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1301e203-7d9a-4735-8db3-7882ad70d343.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "9": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1377c097-f851-4037-991a-ff6c8d3520d7.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "10": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/139b90cd-8272-457a-be32-1298145345be.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "11": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/15d4eec2-8587-4ec6-aea5-21804a998375.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "12": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1722d394-ef72-4265-bc5b-eed7b91f5cb4.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "13": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/19316cbb-d1af-4ab7-b588-78637503e986.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "14": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/19869e75-0925-45dc-b5d9-6968fbfb35b5.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "15": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1ae84b5c-d3ad-48a3-9ccc-1dd76cee392c.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "16": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1c487f1a-a51d-449c-827d-c7b9381acb34.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "17": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/2080556a-6c76-4819-9eb2-c4dd4c9dbd67.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "18": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/2316d281-21a4-460d-9062-f0737249484e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "19": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/236e40f8-ea7b-4c3f-b23e-81aed45b5375.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "20": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/27e090c6-64bb-42e7-8a91-91aeca681131.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "21": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/2b842616-c0cc-43d4-a52d-0159caebadd2.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "22": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/2c95a0a1-9c2c-44df-b0fe-c22efb6d87ee.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "23": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/31432e98-86cd-42ea-ad37-eb4383dc6a81.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "24": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/320e195e-65c7-4220-bdc7-fe1e02a4adfc.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "25": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/33672990-4860-4aa6-ac1b-f9da66f5da59.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "26": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/33940107-e210-4334-a409-48ab591af2ec.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "27": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/354356c1-7b25-4d27-8887-ef9fe68bb76b.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "28": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/35d6761b-6221-47e7-807d-666924f04dc8.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "29": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/368b9fee-88ce-4725-82a5-335d8645aca2.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "30": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/3702f2f1-971c-4b25-b099-0f10b5097ce8.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "31": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/3718761f-feb1-46c4-aaa3-7e07a3fa72fa.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "32": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/371a769a-ddae-47f6-b2c2-957de5c18417.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "33": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/3722deaf-de7b-4e49-b93b-b790fb598337.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "34": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/37752e04-574f-4af3-9e9c-70d67e0d0a98.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "35": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/3a1c15b9-8039-4de3-a060-d1c38f9e5518.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "36": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/3aac5f6f-97c1-4546-94ed-016292e98c9d.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "37": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/48ef7938-7c68-4aeb-9403-4ab1af944a81.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "38": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/4a32b532-cf7d-4658-bff7-a4bdcecbc042.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "39": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/4fa953a9-171c-4532-a352-40ce27eed3c4.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "40": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/4fe8c0b9-fdf4-4fc0-aa7c-774546cdd792.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "41": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/5403b49d-03a7-4cc3-af3c-df098c1c9c2e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "42": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/54a9a943-0831-49ae-bbfb-3e6a9f57160e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "43": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/5516d86e-539a-4ba8-8d25-1a3b27b1267a.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "44": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/5beffa4c-4188-48c1-8374-3ac3e8ea1900.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "45": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/6087f146-f468-472a-b248-fc7386ea3e63.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "46": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/63b9efd6-0709-4d4b-a907-d8a77ec1a327.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "47": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/63ee2346-e151-45a4-90c1-cf1d63ec35f0.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "48": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/6ac949a7-51ea-4c7e-ad46-87e5ee88b99b.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "49": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/6d28946e-a478-4e0b-b39b-ec0236ddc9a5.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "50": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/710160a6-43b4-4ba7-9dcd-93e01befc66f.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "51": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/726b3de5-f2c1-4a92-9039-f61ae9575839.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "52": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/726e7dc5-2089-4758-93e1-79212aedf75f.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "53": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/80f88df1-4e1a-4557-bb7a-1ac86641043e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "54": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/83a4e48d-6452-4245-bdad-63fe3263550e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "55": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/93b0918a-398a-4c6d-a5a9-e35a999b24ae.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "56": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/9b150924-f83c-410e-aaab-ff2d06c9d356.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "57": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/9c224bf0-5641-4160-9d5c-46141ea8372a.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "58": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/a36cd0c3-1955-41b1-9a9c-b30b31a2f094.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "59": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/a83ad5fa-b9b8-4c3f-bc42-3ff6282eb941.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "60": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/abfbe1d5-beb7-49b8-a504-f1cc47ee4731.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "61": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/b38e0742-63fe-49a0-a781-aa4fedaaaf66.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "62": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/b42e1359-c79d-4848-a0f1-3f274e0bf0d9.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "63": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/b4a1e16a-39f0-47ab-aba8-73e82ba9ab18.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "64": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/b90331d4-74f0-43bf-8ed2-f8616d782859.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "65": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/bd3d4b4b-cf31-4f89-8140-9650edb03c7b.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "66": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/be1b2869-b0ba-490f-b207-f6cfe4dfe317.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "67": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/bf4b9a8a-b42a-46fb-b0d0-9cf800f63c8a.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "68": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/c55bee97-593f-441f-b96c-a998d5212a55.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "69": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/ca3f571a-07b1-4b2e-b93d-b827819fb96e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "70": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/d243055f-892e-4042-9694-13d5e99e3550.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "71": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/d7c6614c-cc2b-4e5b-9c0d-ce8e4b2d8ea7.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "72": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/d8ea447f-3ea4-40ed-9bc8-6e78602be9a1.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "73": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/d9713032-2956-4564-b5f5-2dd16245a4e6.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "74": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/daed8456-011e-44e2-b180-6a8a75089257.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "75": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/e17f74a7-90ea-40c4-9cd8-15b4c5766886.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "76": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/f4db287e-34c1-459b-882d-3db58f13eade.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "77": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/f56861a7-b664-468f-bad7-838c02530827.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "78": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/f68fd547-59fb-41e6-be55-1ec17fe2840b.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "79": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/f69add35-c529-4b30-8e64-f09b8308432f.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "80": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/fbf0dded-552a-4ad2-bb62-f1bfabad9bac.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        }
+      },
+      "Transform": {
+        "posX": 0,
+        "posY": 1,
+        "posZ": 0,
+        "rotX": 0,
+        "rotY": 180,
+        "rotZ": 180,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      }
+    },
+    {
+      "Name": "DeckCustom",
+      "ContainedObjects": [
+        {
+          "CardID": 100,
+          "Name": "Card",
+          "Nickname": "Thopter",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 200,
+          "Name": "Card",
+          "Nickname": "Thopter",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 300,
+          "Name": "Card",
+          "Nickname": "Wurm",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 400,
+          "Name": "Card",
+          "Nickname": "Wurm",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 500,
+          "Name": "Card",
+          "Nickname": "Spirit",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 600,
+          "Name": "Card",
+          "Nickname": "Ape",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 700,
+          "Name": "Card",
+          "Nickname": "Faerie",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 800,
+          "Name": "Card",
+          "Nickname": "Faerie Rogue",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 900,
+          "Name": "Card",
+          "Nickname": "Faerie Rogue",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        },
+        {
+          "CardID": 1000,
+          "Name": "Card",
+          "Nickname": "Eldrazi",
+          "Transform": {
+            "posX": 0,
+            "posY": 0,
+            "posZ": 0,
+            "rotX": 0,
+            "rotY": 180,
+            "rotZ": 180,
+            "scaleX": 1,
+            "scaleY": 1,
+            "scaleZ": 1
+          }
+        }
+      ],
+      "DeckIDs": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        1000
+      ],
+      "CustomDeck": {
+        "1": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/52510a8b-a5a2-421b-a8b4-5ab60c848628.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "2": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/4f5a36e3-0529-44d3-94d0-f1bd0399dc38.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "3": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/1f27a3e2-bfd6-4d01-aef1-0bdb09e41ee0.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "4": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/c20607b9-4f4a-4dbc-a09f-250ba2d53f80.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "5": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/243d7514-35a9-446b-be0d-a5b6b4001291.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "6": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/8343e00c-5fc6-46a0-a238-3759338dced4.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "7": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/bcd82cb0-ff4b-4f4d-b3d0-3ac53883b099.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "8": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/0dce18f1-0eff-4354-97b8-cb58295f4865.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "9": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/a07b4786-1592-42c7-9d3e-d0d66abaed99.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        },
+        "10": {
+          "FaceURL": "https://s3.amazonaws.com/frogtown.cards.hq/30ff04d5-ecaf-4be2-94f4-d5409f1c1e4e.jpg",
+          "BackURL": "https://s3.amazonaws.com/frogtown.cards.hq/CardBack.jpg",
+          "NumHeight": 1,
+          "NumWidth": 1,
+          "BackIsHidden": true
+        }
+      },
+      "Transform": {
+        "posX": 2.2,
+        "posY": 1,
+        "posZ": 0,
+        "rotX": 0,
+        "rotY": 180,
+        "rotZ": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      }
+    }
+  ]
+}

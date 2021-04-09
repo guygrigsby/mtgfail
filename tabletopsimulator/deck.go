@@ -11,92 +11,200 @@ import (
 	"time"
 
 	"github.com/avast/retry-go"
+	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
 
 // BuildDeck ...
-func BuildDeck(ctx context.Context, bulk mtgfail.Bulk, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
+func BuildDeck(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]int, log log15.Logger) (*DeckFile, error) {
 	deck := make(map[*mtgfail.Entry]int)
+	tokenDeck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
-		entry := bulk[name]
+		entry, err := bulk.Get(mtgfail.Key(name), log)
+		if err != nil {
+			log.Error(
+				"failed to contact store to get card",
+				"err", err,
+			)
+			return nil, err
+		}
 		if entry == nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
 				"name", name,
 				"count", count,
+				"err", err,
 			)
-			escName := url.QueryEscape(name)
-			uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
 
-			var res *http.Response
-			err := retry.Do(
-				func() error {
-					var err error
-					c := http.Client{Timeout: 5 * time.Second}
-					res, err = c.Get(uri)
-					if err != nil {
-						return err
-					}
-
-					return nil
-				})
+			entry, err = findAlternateNamedCards(name, bulk, log)
 			if err != nil {
+				msg := "failed to contact scryfall and get corrected card"
 				log.Error(
-					"cannot send request to scryfall",
-					"err", err,
-					"uri", uri,
-				)
-				continue
-			}
-			if res.StatusCode != 200 {
-				log.Error(
-					"Unexpected response status",
-					"status", res.Status,
-				)
-
-				continue
-
-			}
-
-			b, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				log.Error(
-					"cannot read scryfall response body",
-					"err", err,
-					"uri", uri,
-				)
-				continue
-			}
-			var autoComplete AutoComplete
-
-			err = json.Unmarshal(b, &autoComplete)
-			if err != nil {
-				log.Error(
-					"Cannot unmarshal scryfal res",
+					msg,
 					"err", err,
 				)
-				continue
+				return nil, err
 			}
-			correctName := autoComplete.Data[0]
 
-			entry = bulk[correctName]
-			// set it in the local data
-			bulk[name] = entry
-			log.Info(
-				"Scryfall autocomplete success",
-				"original", name,
-				"corrected", correctName,
-			)
+		}
+		if isDoubleSided(entry) {
+			token, err := CreateTokenEntry(entry, log)
+			if err != nil {
+				return nil, err
+			}
+			tokenDeck[entry] = count
+			entry = token
 
 		}
 
 		deck[entry] = count
 
 	}
+	if len(tokenDeck) > 0 {
+		return BuildStacks(log, deck, tokenDeck)
+	}
+	return BuildStacks(log, deck)
 
-	return buildStacks(log, deck), nil
+}
+
+var nonCaps = map[string]string{
+	"the": "the",
+	"of":  "of",
+	"a":   "a",
+	"by":  "by",
+	"in":  "in",
+	"for": "for",
+}
+
+func Capitalize(name string, log log15.Logger) string {
+	words := strings.Split(name, " ")
+	newWords := make([]string, len(words))
+
+	for _, word := range words {
+
+		if _, lower := nonCaps[word]; !lower {
+			cap := strings.ToUpper(string(word[0]))
+			newWords = append(newWords, fmt.Sprintf("%s%s", cap, word[1:]))
+		} else {
+			newWords = append(newWords, word)
+		}
+	}
+	return strings.TrimSpace(strings.Join(newWords, " "))
+}
+
+func isDoubleSided(entry *mtgfail.Entry) bool {
+	if len(entry.CardFaces) == 0 {
+		return false
+	}
+	for _, face := range entry.CardFaces {
+		if face.ImageUris.Normal != "" {
+			return true
+		}
+	}
+	return false
+}
+
+func CreateTokenEntry(entry *mtgfail.Entry, log log15.Logger) (*mtgfail.Entry, error) {
+	front := strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0]
+	back := strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0]
+	var token mtgfail.Entry
+	err := deepcopy.Copy(&token, entry)
+	if err != nil {
+		log.Error(
+			"Could not create copy of double sided card",
+			"cardname", entry.Name,
+			"err", err,
+		)
+		return nil, err
+	}
+
+	log.Info(
+		"Double sided card",
+		"name", entry.Name,
+		"front", front,
+		"back", back,
+		"token", token,
+	)
+	return &token, nil
+}
+
+func findAlternateNamedCards(name string, bulk mtgfail.CardStore, log log15.Logger) (*mtgfail.Entry, error) {
+	escName := url.QueryEscape(name)
+	uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
+	var entry *mtgfail.Entry
+
+	var res *http.Response
+	err := retry.Do(
+		func() error {
+			var err error
+			c := http.Client{Timeout: 5 * time.Second}
+			res, err = c.Get(uri)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		})
+	if err != nil {
+		log.Error(
+			"cannot send request to scryfall",
+			"err", err,
+			"uri", uri,
+		)
+		return nil, err
+	}
+	if res.StatusCode != 200 {
+		log.Error(
+			"Unexpected response status",
+			"status", res.Status,
+		)
+
+		return nil, err
+
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Error(
+			"cannot read scryfall response body",
+			"err", err,
+			"uri", uri,
+		)
+		return nil, err
+	}
+	var autoComplete AutoComplete
+
+	err = json.Unmarshal(b, &autoComplete)
+	if err != nil {
+		log.Error(
+			"Cannot unmarshal scryfal res",
+			"err", err,
+		)
+		return nil, err
+	}
+	correctName := autoComplete.Data[0]
+
+	entry, err = bulk.Get(correctName, log)
+	if err != nil {
+		log.Error(
+			"cannot access store",
+			"err", err,
+		)
+		return nil, err
+	}
+
+	// set it in the local data
+	err = bulk.Put(name, entry, log)
+	if err != nil {
+		log.Error(
+			"cannot put correct card in store. Continuing without saving",
+			"err", err,
+		)
+		// we can continue
+	}
+	return entry, nil
 
 }
 
@@ -106,7 +214,7 @@ type AutoComplete struct {
 	Data        []string `json:"data"`
 }
 
-func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
+func BuildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) (*DeckFile, error) {
 
 	var (
 		state []ObjectState
@@ -120,17 +228,20 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 			"unique cards", len(stack),
 		)
 		var (
-			deck = make(map[int]Card, len(stack))
-			ids  []int
-			obs  []ContainedObject
-
-			doubleSiders = make(map[int]Card, len(stack))
-			dIDs         []int
-			dObs         []ContainedObject
+			deck             = make(map[int]Card, len(stack))
+			ids              []int
+			containedObjects []ContainedObject
 		)
 		var cardCount int
-		for entry, count := range stack {
-			cardCount += count
+		for entry, v := range stack {
+			if v == 0 {
+				log.Warn(
+					"Encountered card with 0 occurrences in deck count card. Assuming 1.",
+					"cardname", entry.Name,
+				)
+				v = 1
+			}
+			cardCount += v
 			if entry == nil {
 
 				log.Warn(
@@ -139,7 +250,7 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 				continue
 			}
 			// Card multiples
-			for ; count > 0; count-- {
+			for count := v; count > 0; count-- {
 
 				cardTx := Transform{
 					PosX:   0,
@@ -155,83 +266,40 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 
 				id := (cardNumber) * 100
 				ids = append(ids, id)
-				ob := ContainedObject{
-					CardID:    id,
-					Name:      "Card",
-					Nickname:  entry.Name,
-					Transform: cardTx,
-				}
-				obs = append(obs, ob)
-				var img string
-				// Double sider
-				if len(entry.CardFaces) > 1 {
-					/*
-											      "Name": "Card",
-						      "CustomDeck": {
-						        "1": {
-						          "FaceURL": "https://www.frogtown.me/Images/V1/cc750c64-fd83-4b7b-9a40-a99213e6fa6d.jpg",
-						          "BackURL": "https://www.frogtown.me/Images/V1/8ce7af86-2a0b-426b-8f7b-a49d6c956141.jpg",
-						          "NumHeight": 1,
-						          "NumWidth": 1,
-						          "BackIsHidden": true
-						        }
-						      },
-						      "Transform": {
-						        "posX": 6.6000000000000005,
-						        "posY": 1,
-						        "posZ": 0,
-						        "rotX": 0,
-						        "rotY": 180,
-						        "rotZ": 0,
-						        "scaleX": 1,
-						        "scaleY": 1,
-						        "scaleZ": 1
-						      },
-						      "CardID": 100,
-						      "Nickname": "Jace, Vryn's Prodigy // Jace, Telepath Unbound"
-						    }
-						  ]
-						}
 
-					*/
-					token := Card{
-						FaceURL:      strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
-						BackURL:      strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
-						NumHeight:    1,
-						NumWidth:     1,
-						BackIsHidden: true,
-					}
-					log.Debug(
-						"Double sided card",
-						"name", entry.Name,
-						"face1", strings.Split(entry.CardFaces[0].ImageUris.Png, "?")[0],
-						"face2", strings.Split(entry.CardFaces[1].ImageUris.Png, "?")[0],
-					)
+				var (
+					front string
+					back  string
+				)
 
-					cn := len(dIDs) + 1
-					did := cn * 100
-					dIDs = append(dIDs, did)
-					dob := ContainedObject{
-						CardID:    did,
-						Name:      "Card",
-						Nickname:  entry.Name,
-						Transform: cardTx,
-					}
-
-					dObs = append(dObs, dob)
-					doubleSiders[cn] = token
-					img = strings.Split(entry.CardFaces[0].ImageUris.Large, "?")[0]
+				if isDoubleSided(entry) {
+					front = entry.CardFaces[0].ImageUris.Normal
+					back = entry.CardFaces[1].ImageUris.Normal
 				} else {
-					img = entry.ImageUris.Large
+					front = entry.ImageUris.Normal
+					back = "https://firebasestorage.googleapis.com/v0/b/marketplace-c87d0.appspot.com/o/card_back.jpg?alt=media"
 				}
 
 				card := Card{
-					FaceURL:      img,
-					BackURL:      "https://www.frogtown.me/images/gatherer/CardBack.jpg",
+					FaceURL:      front,
+					BackURL:      back,
 					NumHeight:    1,
 					NumWidth:     1,
 					BackIsHidden: true,
 				}
+				ob := ContainedObject{
+					CardID:      id,
+					Name:        "Card",
+					Nickname:    fmt.Sprintf("%s\n%s", entry.Name, entry.TypeLine),
+					Description: entry.OracleText,
+					Transform:   cardTx,
+					Tooltip:     true,
+					Sticky:      true,
+					CustomDeck: map[int]Card{
+						cardNumber: card,
+					},
+				}
+				containedObjects = append(containedObjects, ob)
 
 				deck[cardNumber] = card
 
@@ -261,27 +329,17 @@ func buildStacks(log log15.Logger, stacks ...map[*mtgfail.Entry]int) *DeckFile {
 
 		state = append(state, ObjectState{
 			Name:             "DeckCustom",
-			ContainedObjects: obs,
+			ContainedObjects: containedObjects,
 			CustomDeck:       deck,
 			DeckIDs:          ids,
 			Transform:        stackTx,
 		})
-		for _, c := range dObs {
-			stackTx.PosY = stackTx.PosY + 2
-			state = append(state, ObjectState{
-				Name:       "Card",
-				CustomDeck: doubleSiders,
-				Transform:  stackTx,
-				CardID:     c.CardID,
-				Nickname:   c.Nickname,
-			})
-		}
 
 		deckNumber++
 	}
 	return &DeckFile{
 		ObjectStates: state,
-	}
+	}, nil
 }
 
 type DeckFile struct {
@@ -308,10 +366,14 @@ type Transform struct {
 }
 
 type ContainedObject struct {
-	CardID    int       `json:"CardID"`
-	Name      string    `json:"Name"`
-	Nickname  string    `json:"Nickname"`
-	Transform Transform `json:"Transform"`
+	CardID      int          `json:"CardID"`
+	Name        string       `json:"Name"`
+	Nickname    string       `json:"Nickname"`
+	Transform   Transform    `json:"Transform"`
+	Description string       `json:"Description,omitempty"`
+	Tooltip     bool         `json:"Tooltip"`
+	Sticky      bool         `json:"Sticky"`
+	CustomDeck  map[int]Card `json:"CustomDeck"`
 }
 
 type ObjectState struct {

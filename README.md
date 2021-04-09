@@ -22,4 +22,3 @@ curl https://api.mtg.fail/\?deck\=https://tappedout.net/mtg-decks/22-01-20-kess-
 
 ```
 
-I am thinking I would like to build a frontend to go with this. This summer I am learning React.js so I can build the pretties.

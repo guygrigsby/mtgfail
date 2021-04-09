@@ -13,9 +13,11 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+// ExampleDeck ...
 const ExampleDeck = "examples/deck.txt"
 
-func ReadBulk(file string, log log15.Logger) (Bulk, error) {
+// ReadBulk ...
+func ReadBulk(file string, log log15.Logger) (CardStore, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		log.Error(
@@ -43,7 +45,7 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 		)
 		return nil, err
 	}
-	var bulk = make(map[string]*Entry)
+	var bulk = store(make(map[string]*Entry))
 	for i, card := range cards {
 		if card == nil {
 			log.Warn(
@@ -64,6 +66,33 @@ func ReadBulk(file string, log log15.Logger) (Bulk, error) {
 	return bulk, nil
 }
 
+type store map[string]*Entry
+
+func (s store) GetMany(names []string, log log15.Logger) ([]*Entry, []error) {
+	var matches []*Entry
+	for _, name := range names {
+		m, ok := s[name]
+		if ok {
+			matches = append(matches, m)
+		}
+	}
+	return matches, nil
+}
+func (s store) Get(name string, log log15.Logger) (*Entry, error) {
+	return s[name], nil
+}
+func (s store) Put(name string, e *Entry, log log15.Logger) error {
+	s[name] = e
+	return nil
+}
+func (s store) PutMany(entries map[string]*Entry, log log15.Logger) error {
+	for k, v := range entries {
+		s[k] = v
+	}
+	return nil
+}
+
+// ConvertToPairText ...
 func ConvertToPairText(deck *Deck) (map[string]int, error) {
 	cards := make(map[string]int)
 	if len(deck.Cards) == 0 {
@@ -77,7 +106,20 @@ func ConvertToPairText(deck *Deck) (map[string]int, error) {
 	return cards, nil
 }
 
-// ReadCardList
+func ConvertEntriesToPairText(cards []*Entry) (map[string]int, error) {
+	pairs := make(map[string]int)
+	if len(cards) == 0 {
+		return nil, fmt.Errorf("Zero length deck %+v", cards)
+	}
+	for _, card := range cards {
+		count := pairs[card.Name]
+		count++
+		pairs[card.Name] = count
+	}
+	return pairs, nil
+}
+
+// ReadCardList ...
 func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 
 	cards := make(map[string]int)
@@ -88,34 +130,54 @@ func ReadCardList(r io.ReadCloser, log log15.Logger) (map[string]int, error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
+		if strings.HasPrefix(line, "//") {
+			// Skip comment line
+			continue
+		}
+
 		lineScanner := bufio.NewScanner(strings.NewReader(line))
 		lineScanner.Split(bufio.ScanWords)
 		ok := lineScanner.Scan()
 		if !ok {
-			log.Info(
-				"Cannot scan count from start of line",
-				"line", line,
-			)
 			continue
 		}
 		str := lineScanner.Text()
 		count, err := strconv.Atoi(str)
 		if err != nil {
-			log.Error(
-				"Invalid file format. Cannot parse card count.",
-				"err", err,
-				"val", str,
+			// Assume one if there is no number
+			log.Warn(
+				"Error converting count",
+				"count", count,
+				"str", str,
 			)
-			return nil, err
+			count = 1
 		}
 		sb := strings.Builder{}
+
 		for lineScanner.Scan() {
 			txt := lineScanner.Text()
+			if txt == "X" || txt == "x" {
+				log.Debug(
+					"throwing away x",
+					"text", txt,
+				)
+				continue
+			}
 			sb.WriteString(txt)
 			sb.WriteString(" ")
 
 		}
 		name := strings.TrimSpace(sb.String())
+		if count == 0 {
+			// We'll assume 1 and fix this, but there is probably a root cause that we are missing.
+			// And we can't be the source of truth, for now.
+			count = 1
+			log.Warn(
+				"Found zero count card, changing to 1",
+				"cardname", name,
+			)
+
+		}
 		cards[name] = count
 
 	}

@@ -6,3 +6,5 @@ up:
 	cp out.json ~/Library/Tabletop\ Simulator/Saves/Saved\ Objects/testing
 test:
 	docker build -t testing-mtg . -f Dockerfile.test
+
+.PHONY: test

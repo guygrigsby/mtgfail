@@ -29,21 +29,33 @@ type CardShort struct {
 	Text   string
 }
 
+func NormalizeCardName(name string) string {
+	//if strings.Contains(name, "//") {
+	//	name = strings.ReplaceAll(name, "//", "")
+	//	re := regexp.MustCompile(`//.*`)
+	//	// Strip everything after the double slash
+	//	// Scrycall has the // and that's where we get our card data
+	//	return string(re.ReplaceAll([]byte(name), []byte{}))
+
+	//}
+	return name
+}
+
 // BuildDeck ...
-func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log15.Logger) (*Deck, error) {
+func BuildDeck(ctx context.Context, bulk CardStore, deckList map[string]int, log log15.Logger) (*Deck, error) {
 	var (
 		deck = Deck{
 			Cards: nil,
 		}
 	)
-
 	for name, count := range deckList {
-		entry := bulk[name]
-		if entry == nil {
+		entry, err := bulk.Get(Key(name), log)
+		if entry == nil || err != nil {
 			log.Warn(
 				"cache miss. Calling scryfall for autocomplete",
 				"name", name,
 				"count", count,
+				"err", err,
 			)
 			escName := url.QueryEscape(name)
 			uri := fmt.Sprintf("https://api.scryfall.com/cards/autocomplete?q=%s", escName)
@@ -100,8 +112,22 @@ func BuildDeck(ctx context.Context, bulk Bulk, deckList map[string]int, log log1
 			}
 
 			correctName := autoComplete.Data[0]
-			entry = bulk[correctName]
-			bulk[name] = entry
+			entry, err = bulk.Get(correctName, log)
+			if err != nil {
+				log.Error(
+					"cannot access store",
+					"err", err,
+				)
+				return nil, err
+			}
+			err = bulk.Put(name, entry, log)
+			if err != nil {
+				log.Error(
+					"cannot put store",
+					"err", err,
+				)
+				return nil, err
+			}
 			log.Debug(
 				"Scryfall autocomplete success",
 				"original", name,
