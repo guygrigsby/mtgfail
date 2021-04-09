@@ -1,59 +1,65 @@
 package mtgfail
 
 import (
+	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseDomain(t *testing.T) {
+func TestTranslateDomain(t *testing.T) {
 	tc := []struct {
-		uri      string
-		valid    bool
-		fullURI  string
-		hasError bool
+		name        string
+		uri         string
+		returnURI   *url.URL
+		expectError bool
 	}{
 		{
+			"betz",
 			"https://tappedout.net/mtg-decks/betz-rakdos/",
-			true,
-			"https://tappedout.net/mtg-decks/betz-rakdos/?fmt=txt",
+			must("https://tappedout.net/mtg-decks/betz-rakdos/?fmt=txt"),
 			false,
 		},
 		{
+			"deckbox valid",
+
 			"https://deckbox.org/sets/2805419",
-			true,
-			"https://deckbox.org/sets/2805419/export",
+			must("https://deckbox.org/sets/2805419/export"),
 			false,
 		},
 		{
+			"unsupported site domain (for now ;))",
 			"https://scryfall.org/sets/2805419",
-			false,
-			"",
-			false,
-		},
-		{
-			"/sets/2805419",
-			false,
-			"",
+			must(""),
 			true,
 		},
-		//{
-		//	"http://805419",
-		//	false,
-		//	"",
-		//	true,
-		//},
+		{
+			"no domain",
+			"/sets/2805419",
+			must(""),
+			true,
+		},
 	}
 
 	for _, test := range tc {
 		test := test
-		t.Run(test.uri, func(t *testing.T) {
-			t.Parallel()
-			valid, fullURI, err := ParseDomain(test.uri)
-			require.Equalf(t, test.hasError, err != nil,
-				"incorrect error return : expected %v, got %v", test.hasError, err != nil)
-			require.Equalf(t, test.fullURI, fullURI, "incorrect fullURL value: expected %s, got %s", test.fullURI, fullURI)
-			require.Equalf(t, test.valid, valid, "incorrect valid value: expected %v, got %v valid")
+		t.Run(test.name, func(t *testing.T) {
+			returnURI, err := TranslateDomain(test.uri)
+			if test.expectError {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.Equalf(t, test.returnURI, returnURI, "incorrect fullURL value: expected '%s', got '%s'", test.returnURI, returnURI)
+			}
+			t.Log("Error message", err)
 		})
 	}
+}
+
+func must(u string) *url.URL {
+	uri, err := url.Parse(u)
+	if err != nil {
+		panic(err)
+	}
+	return uri
 }
